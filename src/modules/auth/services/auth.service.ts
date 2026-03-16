@@ -6,6 +6,9 @@ import {
   ForgotPasswordResponse,
   SigninEmailPayload,
   SigninEmailResponse,
+  ISignupByEmailPayload,
+  ISignupByEmailResponse,
+  IGetSignUpSettingResponse,
 } from '../types/auth.type';
 
 /**
@@ -346,4 +349,12 @@ export const switchOrganization = async (orgId: string): Promise<MFASigninRespon
   }
 
   return response.json();
+};
+
+export const signupByEmail = (payload: ISignupByEmailPayload): Promise<ISignupByEmailResponse> => {
+  return clients.post('/identifier/v1/People/Signup', JSON.stringify(payload));
+};
+
+export const getSignupSettings = (): Promise<IGetSignUpSettingResponse> => {
+  return clients.get(`/idp/v1/Iam/GetSignUpSetting?ProjectKey=${projectKey}`);
 };

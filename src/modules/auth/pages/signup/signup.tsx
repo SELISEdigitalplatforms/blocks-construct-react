@@ -10,6 +10,7 @@ import lightLogo from '@/assets/images/construct_logo_light.svg';
 import { useTheme } from '@/styles/theme/theme-provider';
 import { Divider } from '@/components/core';
 import { SignupForm } from '@/modules/auth/components/signup';
+import { useGetSignupSettings } from '@/modules/auth/hooks/use-auth';
 
 const socialButtons = [
   { icon: googleIcon, alt: 'Google Logo' },
@@ -21,6 +22,10 @@ const socialButtons = [
 export const SignupPage = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const { data } = useGetSignupSettings();
+
+  const isEmailPasswordSignUpEnabled = data?.isEmailPasswordSignUpEnabled ?? false;
+  const isSSoSignUpEnabled = data?.isSSoSignUpEnabled ?? false;
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,18 +46,22 @@ export const SignupPage = () => {
           </Link>
         </div>
       </div>
-      <SignupForm />
+      {isEmailPasswordSignUpEnabled && <SignupForm />}
       <div>
-        <Divider text={t('OR_CONTINUE_WITH')} />
-        <div className="flex items-center gap-8 mt-6">
-          <div className="flex w-full items-center gap-4">
-            {socialButtons.map((button) => (
-              <Button key={button.alt} variant="outline" className="w-[25%] h-12" disabled>
-                <img src={button.icon} width={20} height={20} alt={button.alt} />
-              </Button>
-            ))}
+        {isEmailPasswordSignUpEnabled && isSSoSignUpEnabled && (
+          <Divider text={t('OR_CONTINUE_WITH')} />
+        )}
+        {isSSoSignUpEnabled && (
+          <div className="flex items-center gap-8 mt-6">
+            <div className="flex w-full items-center gap-4">
+              {socialButtons.map((button) => (
+                <Button key={button.alt} variant="outline" className="w-[25%] h-12">
+                  <img src={button.icon} width={20} height={20} alt={button.alt} />
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

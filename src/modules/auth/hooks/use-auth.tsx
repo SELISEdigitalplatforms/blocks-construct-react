@@ -14,6 +14,8 @@ import {
   MFASigninResponse,
   signinByEmail,
   SigninByBlocksOidcPayload,
+  signupByEmail,
+  getSignupSettings,
 } from '../services/auth.service';
 import { useGlobalMutation, useGlobalQuery } from '../../../state/query-client/hooks';
 import { ErrorResponse } from '../../../hooks/use-error-handler';
@@ -159,9 +161,16 @@ export const useSigninEmail = () => {
 //   });
 // };
 
-// export const useSignupByEmail = () => {
-//   return useMutation({
-//     mutationKey: ["signup", "email"],
-//     mutationFn: authService.signupByEmail,
-//   });
-// };
+export const useSignupByEmail = () => {
+  return useMutation({
+    mutationKey: ['signup', 'email'],
+    mutationFn: signupByEmail,
+  });
+};
+
+export const useGetSignupSettings = () => {
+  return useGlobalQuery({
+    queryKey: ['getSignupSettings'],
+    queryFn: getSignupSettings,
+  });
+};

@@ -11,8 +11,14 @@ import {
 } from '@/components/ui-kit/form';
 import { Input } from '@/components/ui-kit/input';
 import { Button } from '@/components/ui-kit/button';
-import { CustomCheckbox } from '@/components/core';
+import { CustomCheckbox, Captcha, useCaptcha } from '@/components/core';
 import { signupFormDefaultValue, signupFormType, getSignupFormValidationSchema } from './utils';
+import { useSignupByEmail } from '../../hooks/use-auth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import z from 'zod';
+import { useToast } from '@/hooks/use-toast';
+import { Toast } from '@/components/ui-kit/toast';
 
 /**
  * SignupForm Component
@@ -30,18 +36,62 @@ import { signupFormDefaultValue, signupFormType, getSignupFormValidationSchema }
 
 export const SignupForm = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const form = useForm<signupFormType>({
     defaultValues: signupFormDefaultValue,
     resolver: zodResolver(getSignupFormValidationSchema(t)),
   });
 
+  const { isPending, mutateAsync } = useSignupByEmail();
+  const googleSiteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY || '';
+  const captchaEnabled = googleSiteKey !== '';
+  const captchaType =
+    import.meta.env.VITE_CAPTCHA_TYPE === 'reCaptcha' ? 'reCaptcha-v2-checkbox' : 'hCaptcha';
+
+  const {
+    code: captchaCode,
+    captcha,
+    reset: resetCaptcha,
+  } = useCaptcha({
+    siteKey: googleSiteKey,
+    type: captchaType,
+  });
+
+  const { isValid } = form.formState;
+
+  const onSubmitHandler = async (values: signupFormType) => {
+    try {
+      const res = await mutateAsync({
+        ...values,
+        captchaCode,
+      });
+      if (!res.isSuccess) {
+        resetCaptcha();
+        toast({
+          variant: 'destructive',
+          title: t('ERROR'),
+          description: t('SOMETHING_WENT_WRONG'),
+        });
+      }
+      return navigate(`/sent-email`);
+    } catch (error) {
+      resetCaptcha();
+      toast({ variant: 'destructive', title: t('ERROR'), description: t('SOMETHING_WENT_WRONG') });
+    }
+  };
+
+  useEffect(() => {
+    if (!isValid && captchaCode) resetCaptcha();
+  }, [captchaCode, isValid, resetCaptcha]);
+
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmitHandler)}>
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-high-emphasis font-normal">{t('EMAIL')}</FormLabel>
@@ -73,8 +123,19 @@ export const SignupForm = () => {
           />
         </div>
 
+        {captchaEnabled && (
+          <div className="my-4">
+            <Captcha {...captcha} theme="light" size="normal" />
+          </div>
+        )}
+
         <div className="flex gap-10 mt-2">
-          <Button className="flex-1 font-extrabold" size="lg" type="submit" disabled>
+          <Button
+            className="flex-1 font-extrabold"
+            size="lg"
+            type="submit"
+            disabled={captchaEnabled && !captchaCode}
+          >
             {t('SIGN_UP')}
           </Button>
         </div>

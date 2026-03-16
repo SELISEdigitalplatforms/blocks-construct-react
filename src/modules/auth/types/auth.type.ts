@@ -45,3 +45,26 @@ export interface AccountActivationPayload {
   captchaCode: string;
   projectKey: string;
 }
+
+export interface ISignupByEmailPayload {
+  email: string;
+  captchaCode: string;
+}
+export interface ISignupByEmailResponse {
+  itemId: string | null;
+  errors: unknown | null;
+  isSuccess: boolean;
+}
+
+export interface IGetSignUpSettingResponse {
+  itemId: string;
+  createdDate: string;
+  lastUpdatedDate: string;
+  createdBy: string;
+  language: string;
+  lastUpdatedBy: string;
+  organizationIds: string[];
+  tags: string[];
+  isEmailPasswordSignUpEnabled: boolean;
+  isSSoSignUpEnabled: boolean;
+}
