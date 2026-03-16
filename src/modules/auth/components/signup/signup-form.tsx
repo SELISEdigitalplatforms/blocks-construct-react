@@ -16,9 +16,7 @@ import { signupFormDefaultValue, signupFormType, getSignupFormValidationSchema }
 import { useSignupByEmail } from '../../hooks/use-auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import z from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import { Toast } from '@/components/ui-kit/toast';
 
 /**
  * SignupForm Component
@@ -44,7 +42,7 @@ export const SignupForm = () => {
     resolver: zodResolver(getSignupFormValidationSchema(t)),
   });
 
-  const { isPending, mutateAsync } = useSignupByEmail();
+  const { mutateAsync } = useSignupByEmail();
   const googleSiteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY || '';
   const captchaEnabled = googleSiteKey !== '';
   const captchaType =

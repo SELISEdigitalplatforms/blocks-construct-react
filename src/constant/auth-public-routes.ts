@@ -1,6 +1,8 @@
 export const publicRoutes = [
   '/login',
   '/signup',
+  '/complete-signup',
+  '/sso-signup',
   '/sent-email',
   '/activate',
   '/resetpassword',
