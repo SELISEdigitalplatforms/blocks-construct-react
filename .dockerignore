@@ -1,0 +1,12 @@
+.git
+node_modules
+build
+dist
+coverage
+.vscode
+.cursor
+.idea
+.DS_Store
+*.log
+.env.local
+storybook-static
