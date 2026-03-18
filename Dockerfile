@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install 
+RUN npm install
 
 COPY . .
 
@@ -12,7 +12,7 @@ ARG ci_build
 
 RUN mkdir -p /app/log
 
-RUN npm run build:${ci_build}
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build:${ci_build}
 
 FROM nginx:stable-alpine
 
