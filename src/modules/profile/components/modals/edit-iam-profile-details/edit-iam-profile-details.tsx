@@ -259,18 +259,26 @@ export function EditIamProfileDetails({ userInfo, onClose }: Readonly<EditIamPro
     async (data: FormData) => {
       const { firstName, lastName } = parseFullName(data.fullName);
 
+      // Get organizationId from existing user memberships
+      const organizationId = userInfo?.memberships?.[0]?.organizationId ?? '';
+
       const payload = {
         itemId: data.itemId,
         firstName,
         lastName,
         email: data.email,
         phoneNumber: data.phoneNumber,
-        roles: data.roles,
+        memberships: [
+          {
+            organizationId,
+            roles: data.roles,
+          },
+        ],
       };
 
       updateAccount(payload);
     },
-    [updateAccount]
+    [updateAccount, userInfo]
   );
 
   const handlePhoneChange = useCallback(

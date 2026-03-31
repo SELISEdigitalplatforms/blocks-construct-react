@@ -78,7 +78,7 @@ export const FileDropdownMenu = ({ file, onAction }: Readonly<FileDropdownMenuPr
       <button
         ref={buttonRef}
         onClick={() => setShowMenu(!showMenu)}
-        className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+        className="p-2 rounded-full hover:bg-gray-100 duration-200"
         aria-label="More options"
       >
         <MoreVertical className="w-5 h-5 text-gray-600" />
@@ -95,7 +95,7 @@ export const FileDropdownMenu = ({ file, onAction }: Readonly<FileDropdownMenuPr
               <button
                 key={uuidv4()}
                 onClick={() => handleMenuItemClick(item.action)}
-                className={`w-full flex items-center px-4 py-3 text-sm transition-colors duration-150 ${item.className}`}
+                className={`w-full flex items-center px-4 py-3 text-sm duration-150 ${item.className}`}
               >
                 <IconComponent className="w-4 h-4 mr-3" />
                 <span className="font-medium">{item.label}</span>

@@ -5,6 +5,7 @@ export type AuthState = {
   isAuthenticated: boolean;
   accessToken: string | null;
   refreshToken: string | null;
+  selectedOrgId: string | null;
   tokens: {
     accessToken: string;
     refreshToken: string;
@@ -14,4 +15,5 @@ export type AuthState = {
   logout: () => void;
   setTokens: (tokens: { accessToken: string; refreshToken: string }) => void;
   setUser: (user: User | null) => void;
+  reset: () => void;
 };

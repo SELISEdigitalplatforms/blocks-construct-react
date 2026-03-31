@@ -301,7 +301,7 @@ const EditableDescription = forwardRef<EditableDescriptionRef, EditableDescripti
               setIsEditing(true);
             }}
             aria-label={t('EDIT_DESCRIPTION')}
-            className={`inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
+            className={`inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
               isEditing ? 'invisible' : 'hover:bg-accent hover:text-accent-foreground'
             } h-9 w-9`}
           >

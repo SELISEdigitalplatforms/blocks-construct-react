@@ -88,7 +88,7 @@ export const AuthLayout = () => {
                     Please create a project at{' '}
                     <a
                       href="https://cloud.seliseblocks.com"
-                      className="font-semibold underline decoration-red-400 underline-offset-2 hover:decoration-red-600 transition-colors"
+                      className="font-semibold underline decoration-red-400 underline-offset-2 hover:decoration-red-600"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

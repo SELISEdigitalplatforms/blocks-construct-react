@@ -8,7 +8,6 @@ import darklogo from '@/assets/images/construct_logo_dark.svg';
 import lightlogo from '@/assets/images/construct_logo_light.svg';
 import { Link } from 'react-router-dom';
 import { useGetLoginOptions } from '../../hooks/use-auth';
-import { SigninOidc } from '../signin-oidc';
 
 export const Signin = () => {
   const { data: loginOption } = useGetLoginOptions();
@@ -58,7 +57,6 @@ export const Signin = () => {
         {passwordGrantAllowed && <SigninEmail />}
         {isDivider && <Divider text={t('AUTH_OR')} />}
         {socialGrantAllowed && loginOption && <SsoSignin loginOption={loginOption} />}
-        {oidcGrantAllowed && loginOption && <SigninOidc />}
       </div>
     </div>
   );

@@ -81,9 +81,12 @@ export const useSignoutMutation = () => {
 };
 
 export const useAccountActivation = () => {
-  return useMutation({
+  return useGlobalMutation<unknown, ErrorResponse, any>({
     mutationKey: ['accountActivation'],
     mutationFn: accountActivation,
+    onError: (error) => {
+      throw error;
+    },
   });
 };
 

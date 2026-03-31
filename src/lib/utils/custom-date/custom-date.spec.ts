@@ -55,15 +55,15 @@ describe('Date formatting utilities', () => {
       expect(formatDate(fixedDate, true)).toBe('15/06/2023');
     });
 
-    test('should handle mocked current dates with jest.spyOn', () => {
-      // This is a better way to mock dates in Jest tests
+    test('should handle mocked current dates with vi.useFakeTimers', () => {
       const mockDate = new Date(2023, 5, 15, 15, 30);
-      vi.spyOn(global, 'Date').mockImplementation(() => mockDate);
+      vi.useFakeTimers();
+      vi.setSystemTime(mockDate);
 
       expect(formatDate(new Date())).toBe('15/06/2023, 15:30');
 
       // Clean up
-      vi.restoreAllMocks();
+      vi.useRealTimers();
     });
 
     test('should handle leap years correctly', () => {

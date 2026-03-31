@@ -85,35 +85,23 @@ const ImagePreview = ({ file, onClose }: Readonly<PreviewProps>) => {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <button
-              onClick={handleZoomOut}
-              className="p-2  hover:bg-opacity-20 rounded-lg transition-colors"
-            >
+            <button onClick={handleZoomOut} className="p-2  hover:bg-opacity-20 rounded-lg">
               <ZoomOut className="w-4 h-4" />
             </button>
             <span className="text-sm px-2">{Math.round(zoom * 100)}%</span>
-            <button
-              onClick={handleZoomIn}
-              className="p-2  hover:bg-opacity-20 rounded-lg transition-colors"
-            >
+            <button onClick={handleZoomIn} className="p-2  hover:bg-opacity-20 rounded-lg">
               <ZoomIn className="w-4 h-4" />
             </button>
-            <button
-              onClick={handleRotate}
-              className="p-2  hover:bg-opacity-20 rounded-lg transition-colors"
-            >
+            <button onClick={handleRotate} className="p-2  hover:bg-opacity-20 rounded-lg">
               <RotateCw className="w-4 h-4" />
             </button>
             <button
               onClick={handleReset}
-              className="px-3 py-1 text-sm  hover:bg-opacity-20 rounded-lg transition-colors"
+              className="px-3 py-1 text-sm  hover:bg-opacity-20 rounded-lg"
             >
               Reset
             </button>
-            <button
-              onClick={onClose}
-              className="p-2  hover:bg-opacity-50 rounded-lg transition-colors"
-            >
+            <button onClick={onClose} className="p-2  hover:bg-opacity-50 rounded-lg">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -164,10 +152,7 @@ const VideoPreview = ({ file, onClose }: Readonly<PreviewProps>) => {
               <p className="text-sm text-gray-300">{file.size}</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2  hover:bg-opacity-20 rounded-lg transition-colors text-gray-50"
-          >
+          <button onClick={onClose} className="p-2  hover:bg-opacity-20 rounded-lg text-gray-50">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -231,7 +216,7 @@ const AudioPreview = ({ file, onClose }: Readonly<PreviewProps>) => {
               <p className="text-sm text-gray-500">{file.size}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -267,19 +252,16 @@ const AudioPreview = ({ file, onClose }: Readonly<PreviewProps>) => {
           </div>
 
           <div className="flex items-center justify-center space-x-4">
-            <button
-              onClick={handleMute}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
+            <button onClick={handleMute} className="p-2 hover:bg-gray-100 rounded-lg">
               {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
             <button
               onClick={handlePlayPause}
-              className="p-4 bg-blue-500 hover:bg-blue-600 text-high-emphasis rounded-full transition-colors"
+              className="p-4 bg-blue-500 hover:bg-blue-600 text-high-emphasis rounded-full"
             >
               {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <button className="p-2 hover:bg-gray-100 rounded-lg">
               <Download className="w-5 h-5" />
             </button>
           </div>
@@ -358,7 +340,7 @@ const DocumentPreview = ({ file, onClose }: Readonly<PreviewProps>) => {
               <span className="hidden md:inline">Next</span>
               <ChevronRight className="md:hidden h-4 w-4 md:ml-2" />
             </Button>
-            <button onClick={onClose} className="p-2 rounded-lg transition-colors">
+            <button onClick={onClose} className="p-2 rounded-lg">
               <X className="w-4 h-4" />
             </button>
           </div>

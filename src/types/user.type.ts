@@ -27,4 +27,5 @@ export type User = {
   userCreationType: number;
   lastLoggedInDeviceInfo: string;
   logInCount: number;
+  memberships?: Membership[];
 };

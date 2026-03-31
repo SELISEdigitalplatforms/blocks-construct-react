@@ -130,10 +130,29 @@ export const clients: Https = {
       }
 
       if (response.status === 401) {
+        // Parse error response first to check if it's a login error
+        let err;
+        try {
+          err = await response.json();
+        } catch {
+          err = { error: response.statusText || 'Unauthorized' };
+        }
+
+        // If error has error_description, it's likely a login error, throw it directly
+        if (err.error_description) {
+          throw new HttpError(response.status, err);
+        }
+
+        // Otherwise, try to refresh token
         return this.handleAuthError<T>(url, method, headers, body);
       }
 
-      const err = await response.json();
+      let err;
+      try {
+        err = await response.json();
+      } catch {
+        err = { error: response.statusText || 'Request failed' };
+      }
       throw new HttpError(response.status, err);
     } catch (error) {
       if (error instanceof HttpError) {

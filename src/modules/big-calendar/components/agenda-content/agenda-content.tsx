@@ -75,7 +75,7 @@ export const AgendaContent = ({ events, date, onSelectEvent }: Readonly<AgendaCo
                       key={`${event.start.getTime()}-${event.end.getTime()}-${event.title}`}
                       type="button"
                       onClick={() => onSelectEvent?.(event)}
-                      className="w-full text-left cursor-pointer flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 hover:bg-surface p-2 hover:rounded transition-colors"
+                      className="w-full text-left cursor-pointer flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 hover:bg-surface p-2 hover:rounded"
                     >
                       <div className="flex items-center gap-3 w-full sm:w-[23%]">
                         <div

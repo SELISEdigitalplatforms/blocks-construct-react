@@ -50,7 +50,7 @@ export const NotificationItem = ({ notification }: Readonly<NotificationItemProp
 
   return (
     <div className="border-b border-border last:border-b-0">
-      <div className="group flex items-start gap-3 p-2 hover:bg-muted/50 transition-colors cursor-pointer">
+      <div className="group flex items-start gap-3 p-2 hover:bg-muted/50 cursor-pointer">
         <div className={`w-2 h-2 rounded-full mt-3 ${!isRead && 'bg-secondary'}`} />
         <div className="flex w-full justify-between">
           <div className="flex flex-col gap-1">

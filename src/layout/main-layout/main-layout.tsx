@@ -9,6 +9,8 @@ import {
   AppSidebar,
   Notification,
   useGetNotifications,
+  ThemeSwitcher,
+  OrgSwitcher,
 } from '@/components/core';
 
 type NotificationsData = {
@@ -58,7 +60,8 @@ export const MainLayout = () => {
           <div className="flex items-center">
             <SidebarTrigger className="pl-0" />
           </div>
-          <div className="flex justify-between items-center gap-1 sm:gap-3 md:gap-8">
+          <div className="flex justify-between items-center gap-1 sm:gap-2 md:gap-4">
+            <ThemeSwitcher />
             {/* TODO: Need later when the docs are ready and do binding to redirect to docs page*/}
             {/* <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
               <Library className="!w-5 !h-5 text-medium-emphasis" />
@@ -82,6 +85,7 @@ export const MainLayout = () => {
               </MenubarMenu>
             </Menubar>
             <LanguageSelector />
+            <OrgSwitcher />
             <ProfileMenu />
           </div>
         </div>

@@ -1,5 +1,5 @@
 //TODO FE: only for the dev environment
-// import { Membership } from '@/types/user.type';
+import { Membership } from '@/types/user.type';
 
 export interface IamData {
   itemId: string;
@@ -24,6 +24,7 @@ export interface IamData {
   userCreationType: number;
   lastLoggedInDeviceInfo: string;
   logInCount: number;
+  memberships?: Membership[];
 }
 
 export interface UserFilter {

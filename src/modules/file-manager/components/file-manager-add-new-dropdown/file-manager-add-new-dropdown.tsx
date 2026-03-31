@@ -159,7 +159,7 @@ export const AddDropdownMenu = ({
           <div className="space-y-6">
             <button
               type="button"
-              className="border-2 border-dashed border-gray-300 hover:border-gray-400 rounded-lg p-16 text-center transition-colors cursor-pointer w-full bg-transparent"
+              className="border-2 border-dashed border-gray-300 hover:border-gray-400 rounded-lg p-16 text-center cursor-pointer w-full bg-transparent"
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}

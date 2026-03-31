@@ -32,3 +32,5 @@ export { Notification } from './notification/component/notification/notification
 export { NotificationItem } from './notification/component/notification-item/notification-item';
 export * from './notification/hooks/use-notification';
 export { ExtensionBanner } from './extension-banner/extension-banner';
+export { ThemeSwitcher } from './theme-switcher/theme-switcher';
+export { OrgSwitcher } from './org-switcher/org-switcher';

@@ -1,45 +1,62 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { AuthState } from './index.type';
+import { decodeJWT } from '@/lib/utils/decode-jwt-utils';
+
+const initialState = {
+  isAuthenticated: false,
+  user: null,
+  accessToken: null,
+  refreshToken: null,
+  selectedOrgId: null,
+  tokens: null,
+};
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      isAuthenticated: false,
-      user: null,
-      accessToken: null,
-      refreshToken: null,
-      tokens: null,
-      login: (accessToken, refreshToken) =>
-        set((state) => ({
+      ...initialState,
+      login: (accessToken, refreshToken) => {
+        const decoded = decodeJWT(accessToken);
+        const orgId = decoded?.org_id ?? null;
+
+        return set((state) => ({
           ...state,
           isAuthenticated: true,
           accessToken,
           refreshToken,
-        })),
-      setAccessToken: (accessToken) =>
-        set((state) => ({
+          selectedOrgId: orgId,
+        }));
+      },
+      setAccessToken: (accessToken) => {
+        const decoded = decodeJWT(accessToken);
+        const orgId = decoded?.org_id ?? null;
+
+        return set((state) => ({
           ...state,
           accessToken,
-        })),
-      logout: () =>
-        set({
-          isAuthenticated: false,
-          accessToken: null,
-          refreshToken: null,
-          tokens: null,
-          user: null,
-        }),
-      setTokens: (tokens) =>
-        set((state) => ({
+          selectedOrgId: orgId,
+        }));
+      },
+      logout: () => set(initialState),
+      setTokens: (tokens) => {
+        const decoded = decodeJWT(tokens.accessToken);
+        const orgId = decoded?.org_id ?? null;
+
+        return set((state) => ({
           ...state,
           tokens,
-        })),
+          accessToken: tokens.accessToken,
+          refreshToken: tokens.refreshToken,
+          selectedOrgId: orgId,
+        }));
+      },
       setUser: (user) =>
         set((state) => ({
           ...state,
           user,
         })),
+      reset: () => set(initialState),
     }),
     {
       name: 'auth-storage',

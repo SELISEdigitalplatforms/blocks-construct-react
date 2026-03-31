@@ -4,6 +4,7 @@ import googleIcon from '@/assets/images/social_media_google.svg';
 import githubIcon from '@/assets/images/social_media_github.svg';
 import linkedinIcon from '@/assets/images/social_media_in.svg';
 import xIcon from '@/assets/images/social_media_x.svg';
+import ownSSOIcon from '@/assets/images/social_media_ownsso.svg';
 
 export enum SSO_PROVIDERS {
   google = 'google',
@@ -11,6 +12,7 @@ export enum SSO_PROVIDERS {
   github = 'github',
   linkedin = 'linkedin',
   x = 'x',
+  ownsso = 'ownsso',
 }
 
 export const SOCIAL_AUTH_PROVIDERS: Record<SSO_PROVIDERS, SocialAuthProvider> = {
@@ -61,6 +63,16 @@ export const SOCIAL_AUTH_PROVIDERS: Record<SSO_PROVIDERS, SocialAuthProvider> = 
     description: 'Enable the X login option for your Auth0 applications',
     icon: 'x-icon',
     imageSrc: xIcon,
+    isAvailable: true,
+    isConfigured: false,
+    configurations: null,
+  },
+  ownsso: {
+    value: SSO_PROVIDERS.ownsso,
+    label: 'Custom SSO',
+    description: 'Configure your own SSO provider using OIDC protocols.',
+    icon: 'own-sso-icon',
+    imageSrc: ownSSOIcon,
     isAvailable: true,
     isConfigured: false,
     configurations: null,

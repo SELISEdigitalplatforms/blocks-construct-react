@@ -352,7 +352,7 @@ export const ShareWithMeModal = ({
                     />
                     <button
                       onClick={() => handleRemoveUser(user.id)}
-                      className="p-1.5 hover:bg-gray-100 rounded-full text-gray-400 hover:text-red-500 transition-colors"
+                      className="p-1.5 hover:bg-gray-100 rounded-full text-gray-400 hover:text-red-500"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -367,7 +367,7 @@ export const ShareWithMeModal = ({
         <div className="py-3  px-4 flex items-center justify-between bg-background">
           <button
             onClick={handleCancel}
-            className="px-4 py-2 text-sm text-high-emphasis hover:bg-gray-200 rounded-md transition-colors"
+            className="px-4 py-2 text-sm text-high-emphasis hover:bg-gray-200 rounded-md"
           >
             Cancel
           </button>
@@ -376,7 +376,7 @@ export const ShareWithMeModal = ({
             {currentView === 'share' && selectedUsers.length > 0 && (
               <button
                 onClick={() => setCurrentView('manage')}
-                className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                className="px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-md"
               >
                 Manage ({selectedUsers.length})
               </button>
@@ -384,14 +384,14 @@ export const ShareWithMeModal = ({
             {currentView === 'manage' && (
               <button
                 onClick={() => setCurrentView('share')}
-                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
               >
                 Back
               </button>
             )}
             <button
               onClick={handleConfirm}
-              className="px-4 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary transition-colors"
+              className="px-4 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary"
             >
               Send
             </button>

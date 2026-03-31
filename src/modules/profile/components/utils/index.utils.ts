@@ -11,6 +11,14 @@ export const getValidationSchemas = (t: (key: string) => string) => ({
     firstName: z.string().min(1, { message: t('FIRST_NAME_CANT_EMPTY') }),
     lastName: z.string().min(1, { message: t('LAST_NAME_CANT_EMPTY') }),
     // email: z.string().email(),
+    memberships: z
+      .array(
+        z.object({
+          organizationId: z.string(),
+          roles: z.array(z.string()),
+        })
+      )
+      .optional(),
   }),
 
   changePasswordFormValidationSchema: z.object({

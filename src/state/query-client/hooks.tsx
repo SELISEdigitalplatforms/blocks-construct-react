@@ -16,6 +16,9 @@ const processApiError = (err: any): ErrorResponse => {
   // Extract errors object from backend response (e.g., {"isSuccess":false,"errors":{"Password":"..."}})
   const backendErrors = err.error?.errors || err.response?.data?.errors;
 
+  // Extract status code from multiple possible locations
+  const status = err.status || err.response?.status || err.error?.status;
+
   const errorInfo = {
     error: err.error?.error || err.response?.data?.error || 'UNKNOWN_ERROR',
     message: err.error?.message || err.response?.data?.message,
@@ -29,6 +32,7 @@ const processApiError = (err: any): ErrorResponse => {
       err.error?.message ||
       err.message ||
       err.response?.data?.error_description,
+    status,
   };
 
   if (errorInfo.error === 'invalid_refresh_token') {

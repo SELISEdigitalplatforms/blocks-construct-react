@@ -338,7 +338,7 @@ export function AttachmentsSection({
   const renderEmptyState = () => (
     <div
       {...getRootProps()}
-      className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors border-gray-300 hover:border-primary/50"
+      className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer border-gray-300 hover:border-primary/50"
     >
       <Input {...getInputProps()} />
       <div className="flex flex-col items-center gap-2">
@@ -438,7 +438,7 @@ export function AttachmentsSection({
               </DialogHeader>
               <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
+                className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer ${
                   isDragActive
                     ? 'border-primary bg-primary/5'
                     : 'border-border hover:border-primary/50'

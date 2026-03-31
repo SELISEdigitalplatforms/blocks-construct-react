@@ -2,6 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pencil } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
+import { useAuthStore } from '@/state/store/auth';
+import { decodeJWT } from '@/lib/utils/decode-jwt-utils';
 import DummyProfile from '@/assets/images/dummy_profile.png';
 import {
   Card,
@@ -63,7 +65,18 @@ export const ProfileCard = ({
     setImageError(true);
   };
 
-  const translatedRoles = userInfo?.roles
+  const { accessToken } = useAuthStore();
+
+  const currentOrgRoles = useMemo(() => {
+    if (!userInfo?.memberships?.length || !accessToken) return userInfo?.roles ?? [];
+    const decoded = decodeJWT(accessToken);
+    const currentOrgId = decoded?.org_id;
+    if (!currentOrgId) return userInfo?.roles ?? [];
+    const membership = userInfo.memberships.find((m: any) => m.organizationId === currentOrgId);
+    return membership?.roles ?? userInfo?.roles ?? [];
+  }, [userInfo, accessToken]);
+
+  const translatedRoles = currentOrgRoles
     ?.map((role: any) => {
       const roleKey = role.toUpperCase();
       return t(roleKey);

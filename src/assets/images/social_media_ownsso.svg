@@ -1,0 +1,54 @@
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+
+  <g shape-rendering="crispEdges" transform="translate(20,25) scale(1.2)">
+
+    <!-- OWN (Top Row) -->
+    <g fill="hsl(218, 78%, 36%)">
+
+      <!-- O -->
+      <rect x="0" y="0" width="8" height="40"/>
+      <rect x="0" y="0" width="32" height="8"/>
+      <rect x="24" y="0" width="8" height="40"/>
+      <rect x="0" y="32" width="32" height="8"/>
+
+      <!-- W -->
+      <rect x="40" y="0" width="8" height="40"/>
+      <rect x="56" y="16" width="8" height="24"/>
+      <rect x="72" y="0" width="8" height="40"/>
+      <rect x="48" y="24" width="8" height="16"/>
+
+      <!-- N -->
+      <rect x="88" y="0" width="8" height="40"/>
+      <rect x="112" y="0" width="8" height="40"/>
+      <rect x="96" y="8" width="8" height="8"/>
+      <rect x="104" y="16" width="8" height="8"/>
+      <rect x="96" y="24" width="8" height="8"/>
+
+    </g>
+
+    <!-- SSO (Bottom Row) -->
+    <g transform="translate(0,60)" fill="hsl(218, 78%, 42%)">
+
+      <!-- S (exact grid pattern) -->
+      <rect x="0" y="0" width="32" height="8"/>
+      <rect x="0" y="8" width="8" height="8"/>
+      <rect x="0" y="16" width="32" height="8"/>
+      <rect x="24" y="24" width="8" height="8"/>
+      <rect x="0" y="32" width="32" height="8"/>
+
+      <!-- S -->
+      <rect x="40" y="0" width="32" height="8"/>
+      <rect x="40" y="8" width="8" height="8"/>
+      <rect x="40" y="16" width="32" height="8"/>
+      <rect x="64" y="24" width="8" height="8"/>
+      <rect x="40" y="32" width="32" height="8"/>
+
+      <!-- O -->
+      <rect x="80" y="0" width="8" height="40"/>
+      <rect x="80" y="0" width="32" height="8"/>
+      <rect x="104" y="0" width="8" height="40"/>
+      <rect x="80" y="32" width="32" height="8"/>
+
+    </g>
+  </g>
+</svg>

@@ -107,6 +107,9 @@ const getApiUrl = (path: string) => {
   return `${baseUrl}${cleanPath}`;
 };
 
+export const savedOrgId =
+  typeof window !== 'undefined' ? window.localStorage.getItem('selected-org-id') : null;
+
 export const signin = async <
   T extends 'password' | 'social' | 'mfa_code' | 'authorization_code' = 'password',
 >(
@@ -121,6 +124,10 @@ export const signin = async <
       passwordFormData.append('grant_type', 'password');
       passwordFormData.append('username', payload.username);
       passwordFormData.append('password', payload.password);
+
+      if (savedOrgId) {
+        passwordFormData.append('org_id', savedOrgId);
+      }
     }
     const response = await fetch(url, {
       method: 'POST',
@@ -144,6 +151,10 @@ export const signin = async <
     signinBySSOData.append('code', payload.code);
     signinBySSOData.append('state', payload.state);
 
+    if (savedOrgId) {
+      signinBySSOData.append('org_id', savedOrgId);
+    }
+
     const response = await fetch(url, {
       method: 'POST',
       body: signinBySSOData,
@@ -164,6 +175,10 @@ export const signin = async <
     const signinBySSOData = new URLSearchParams();
     signinBySSOData.append('grant_type', 'authorization_code');
     signinBySSOData.append('code', payload.code);
+
+    if (savedOrgId) {
+      signinBySSOData.append('org_id', savedOrgId);
+    }
     const response = await fetch(url, {
       method: 'POST',
       body: signinBySSOData,
@@ -297,8 +312,38 @@ export const signinByEmail = (payload: SigninEmailPayload): Promise<SigninEmailR
   body.append('grant_type', 'password');
   body.append('username', payload.username);
   body.append('password', payload.password);
+
+  if (savedOrgId) {
+    body.append('org_id', savedOrgId);
+  }
+
   const url = '/idp/v1/Authentication/Token';
   return clients.post(url, body, {
     'Content-Type': 'application/x-www-form-urlencoded',
   });
+};
+
+export const switchOrganization = async (orgId: string): Promise<MFASigninResponse> => {
+  const url = getApiUrl('/idp/v1/Authentication/Token');
+  const formData = new URLSearchParams();
+  formData.append('grant_type', 'switch_organization');
+  formData.append('refresh_token', useAuthStore.getState().refreshToken ?? '');
+  formData.append('org_id', orgId);
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'x-blocks-key': projectKey,
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new HttpError(response.status, err);
+  }
+
+  return response.json();
 };

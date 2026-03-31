@@ -196,6 +196,7 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
       email: data.email,
       phoneNumber: data.phoneNumber,
       profileImageUrl,
+      memberships: userInfo.memberships || [],
     };
 
     updateAccount(payload);

@@ -14,11 +14,7 @@ export const getAccount = async (): Promise<User> => {
 };
 
 export const updateAccount = (data: ProfileFormType) => {
-  return clients.post<{
-    itemId: string;
-    errors: unknown;
-    isSuccess: boolean;
-  }>('/idp/v1/Iam/UpdateAccount', JSON.stringify(data));
+  return clients.post<User>('/idp/v1/Iam/UpdateAccount', JSON.stringify(data));
 };
 
 export const createAccount = (data: CreateUserFormType) => {

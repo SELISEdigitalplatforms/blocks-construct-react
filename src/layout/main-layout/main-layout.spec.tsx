@@ -26,6 +26,8 @@ vi.mock('@/components/core', () => ({
   ProfileMenu: () => <div data-testid="profile-menu">Profile Menu</div>,
   AppSidebar: () => <div data-testid="app-sidebar">App Sidebar</div>,
   Notification: () => <div data-testid="notification">Notification</div>,
+  ThemeSwitcher: () => <div data-testid="theme-switcher">Theme Switcher</div>,
+  OrgSwitcher: () => <div data-testid="org-switcher">Org Switcher</div>,
   useGetNotifications: vi.fn().mockReturnValue({
     data: {
       notifications: [],

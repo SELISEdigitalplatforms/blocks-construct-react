@@ -20,6 +20,13 @@ export const useGetAccount = () => {
   return useQuery({
     queryKey: ['getAccount'],
     queryFn: getAccount,
+    retry: (failureCount, error: any) => {
+      if (error?.response?.status === 403) {
+        return false;
+      }
+      return failureCount < 3;
+    },
+    throwOnError: false,
   });
 };
 

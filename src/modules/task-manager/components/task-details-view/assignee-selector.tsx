@@ -171,7 +171,7 @@ const AssigneeSelectorComponent = ({
                     >
                       <div
                         className={cn(
-                          'mr-2 flex h-4 w-4 items-center justify-center rounded border transition-colors',
+                          'mr-2 flex h-4 w-4 items-center justify-center rounded border',
                           assignee.isSelected && !assignee.isProcessing
                             ? 'bg-primary border-primary'
                             : 'border-border',

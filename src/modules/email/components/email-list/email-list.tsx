@@ -164,7 +164,7 @@ export const EmailList = ({
                   key={email.id}
                   role="button"
                   tabIndex={0}
-                  className={`w-full text-left cursor-pointer p-4 transition-colors hover:bg-neutral-50 flex flex-col gap-1 focus:outline-none focus:bg-neutral-50 ${
+                  className={`w-full text-left cursor-pointer p-4 hover:bg-neutral-50 flex flex-col gap-1 focus:outline-none focus:bg-neutral-50 ${
                     selectedEmail?.id === email.id && 'bg-surface'
                   } ${checkedEmailIds?.includes(email?.id) && 'bg-primary-50'} ${
                     email.isRead && 'bg-neutral-25'
@@ -300,7 +300,7 @@ export const EmailList = ({
                       key={email.id}
                       role="button"
                       tabIndex={0}
-                      className={`w-full text-left cursor-pointer p-4 transition-colors hover:bg-neutral-50 flex flex-col gap-1 focus:outline-none focus:bg-neutral-50 ${selectedEmail?.id === email.id && 'bg-surface'} ${checkedEmailIds?.includes(email?.id) && 'bg-primary-50'} ${email.isRead && 'bg-neutral-25'}`}
+                      className={`w-full text-left cursor-pointer p-4 hover:bg-neutral-50 flex flex-col gap-1 focus:outline-none focus:bg-neutral-50 ${selectedEmail?.id === email.id && 'bg-surface'} ${checkedEmailIds?.includes(email?.id) && 'bg-primary-50'} ${email.isRead && 'bg-neutral-25'}`}
                       onClick={() => handleEmailSelection(email)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
