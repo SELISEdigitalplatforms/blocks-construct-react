@@ -1,8 +1,8 @@
 import {
   createPasswordValidationSchema,
-  PasswordFormType,
   passwordFormDefaultValues,
 } from '../../../../lib/utils/validation/password-validation';
+import { z } from 'zod';
 
 /**
  * Set Password Form Schema
@@ -20,6 +20,16 @@ import {
  */
 
 export const getSetPasswordFormValidationSchema = (t: (key: string) => string) =>
-  createPasswordValidationSchema(t);
-export type setPasswordFormType = PasswordFormType;
-export const setPasswordFormDefaultValue = passwordFormDefaultValues;
+  z.intersection(
+    z.object({
+      firstName: z.string().min(1, { message: t('REQUIRED_FIELD') }),
+      lastName: z.string().min(1, { message: t('REQUIRED_FIELD') }),
+    }),
+    createPasswordValidationSchema(t)
+  );
+export type setPasswordFormType = z.infer<ReturnType<typeof getSetPasswordFormValidationSchema>>;
+export const setPasswordFormDefaultValue = {
+  ...passwordFormDefaultValues,
+  firstName: '',
+  lastName: '',
+};

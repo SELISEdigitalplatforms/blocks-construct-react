@@ -6,7 +6,7 @@ import bgAuthDark from '@/assets/images/bg_auth_dark.svg';
 import { useGetLoginOptions } from '@/modules/auth/hooks/use-auth';
 import { useAuthState } from '@/state/client-middleware';
 import { useTheme } from '@/styles/theme/theme-provider';
-import { ExtensionBanner, LanguageSelector } from '@/components/core';
+import { ExtensionBanner, LanguageSelector, ThemeSwitcher } from '@/components/core';
 
 export const AuthLayout = () => {
   const { isLoading, error: loginOptionsError } = useGetLoginOptions();
@@ -157,7 +157,10 @@ export const AuthLayout = () => {
         </div>
         <div className="flex items-center justify-center w-full px-6 sm:px-20 md:w-[64%] md:px-[14%] lg:px-[16%] 2xl:px-[20%]">
           <div className="absolute top-2 right-4">
-            <LanguageSelector />
+            <div className="flex flex-row gap-2">
+              <ThemeSwitcher />
+              <LanguageSelector />
+            </div>
           </div>
           {renderAuthContent()}
         </div>

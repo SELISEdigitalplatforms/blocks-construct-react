@@ -27,12 +27,14 @@ export const SetpasswordForm = ({ code }: Readonly<{ code: string }>) => {
   // Check if captcha is enabled
   const captchaEnabled = (import.meta.env.VITE_CAPTCHA_SITE_KEY || '') !== '';
 
-  const handleSubmit = async (password: string, code: string, captchaToken?: string) => {
+  const handleSubmit = async (password: string, code: string, captchaToken?: string, formData?: any) => {
     if (captchaEnabled && !captchaToken) {
       return;
     }
 
     await mutateAsync({
+      firstname: formData?.firstName ?? '',
+      lastname: formData?.lastName ?? '',
       password,
       code,
       captchaCode: captchaToken ?? '',
@@ -53,6 +55,7 @@ export const SetpasswordForm = ({ code }: Readonly<{ code: string }>) => {
       isPending={isPending}
       isCaptchaValid={isCaptchaValid}
       onCaptchaValidation={handleCaptchaValidation}
+      showNameFields={true}
     />
   );
 };
