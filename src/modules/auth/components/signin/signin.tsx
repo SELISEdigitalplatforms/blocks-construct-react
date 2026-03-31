@@ -6,7 +6,7 @@ import { SigninEmail } from '../signin-email';
 import { useTheme } from '@/styles/theme/theme-provider';
 import darklogo from '@/assets/images/construct_logo_dark.svg';
 import lightlogo from '@/assets/images/construct_logo_light.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useGetLoginOptions, useGetSignupSettings } from '../../hooks/use-auth';
 
 export const Signin = () => {
@@ -15,6 +15,8 @@ export const Signin = () => {
 
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const location = useLocation();
+  const ssoError = location.state?.ssoError;
 
   const passwordGrantAllowed = !!loginOption?.allowedGrantTypes?.includes(GRANT_TYPES.password);
   const socialGrantAllowed =
@@ -25,6 +27,7 @@ export const Signin = () => {
   const isDivider = passwordGrantAllowed && (socialGrantAllowed || oidcGrantAllowed);
 
   const isBannerAllowedToVisible = [
+    'localhost',
     'construct.seliseblocks.com',
     'stg-construct.seliseblocks.com',
     'dev-construct.seliseblocks.com',
@@ -50,6 +53,17 @@ export const Signin = () => {
           </div>
         )}
       </div>
+      
+      {ssoError && (
+        <div className="w-full">
+          <div className="rounded-lg bg-error-background border border-error p-4">
+            <p className="text-xs font-normal text-error-high-emphasis">
+              {ssoError}
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className={'w-full ' + (isBannerAllowedToVisible ? 'visible' : 'invisible h-0')}>
         <div className="rounded-lg bg-success-background border border-success p-4">
           <p className="text-xs font-normal text-success-high-emphasis">

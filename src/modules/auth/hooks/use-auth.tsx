@@ -16,6 +16,7 @@ import {
   SigninByBlocksOidcPayload,
   signupByEmail,
   getSignupSettings,
+  SSoConsentSigninPayload,
 } from '../services/auth.service';
 import { useGlobalMutation, useGlobalQuery } from '../../../state/query-client/hooks';
 import { ErrorResponse } from '../../../hooks/use-error-handler';
@@ -53,13 +54,13 @@ import { getLoginOption } from '../services/sso.service';
  */
 
 export const useSigninMutation = <
-  T extends 'password' | 'mfa_code' | 'social' | 'authorization_code',
+  T extends 'password' | 'mfa_code' | 'social' | 'authorization_code' | 'sso_consent',
 >() => {
   const queryClient = useQueryClient();
   return useGlobalMutation<
     SignInResponse | MFASigninResponse,
     ErrorResponse,
-    PasswordSigninPayload | MFASigninPayload | SSoSigninPayload | SigninByBlocksOidcPayload
+    PasswordSigninPayload | MFASigninPayload | SSoSigninPayload | SigninByBlocksOidcPayload | SSoConsentSigninPayload
   >({
     mutationKey: ['signin'],
     mutationFn: async (payload) => signin<T>(payload),

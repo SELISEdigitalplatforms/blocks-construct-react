@@ -3,10 +3,16 @@ import darkLogo from '@/assets/images/construct_logo_dark.svg';
 import lightLogo from '@/assets/images/construct_logo_light.svg';
 import { useTheme } from '@/styles/theme/theme-provider';
 import { SsoSignupForm } from '@/modules/auth/components/sso-signup/sso-signup-form';
+import { Link, useSearchParams } from 'react-router-dom';
 
 export const SsoSignupPage = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const firstName = searchParams.get('firstname') ?? '';
+  const lastName = searchParams.get('lastname') ?? '';
+  // const email = searchParams.get('email') ?? '';
+  const username = searchParams.get('username') ?? '';
 
   return (
     <div className="flex flex-col gap-6">
@@ -16,7 +22,18 @@ export const SsoSignupPage = () => {
       <div>
         <div className="text-2xl font-bold text-high-emphasis">{t('COMPLETE_SIGNUP')}</div>
       </div>
-      <SsoSignupForm />
+      <div className="flex items-center gap-1">
+        <span className="text-sm font-normal text-medium-emphasis">
+          {t('ALREADY_HAVE_ACCOUNT')}
+        </span>
+        <Link
+          to={'/login'}
+          className="text-sm font-bold text-primary hover:text-primary-600 hover:underline"
+        >
+          {t('LOG_IN')}
+        </Link>
+      </div>
+      <SsoSignupForm firstName={firstName} lastName={lastName} email={username} />
     </div>
   );
 };

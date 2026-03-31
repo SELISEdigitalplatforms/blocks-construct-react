@@ -82,7 +82,13 @@ const SSOSigninCard = ({
       if (!res.providerUrl) {
         return alert('No redirect URL received from the authentication service.');
       }
-      window.location.href = res.providerUrl;
+
+      // Store the clicked provider in localStorage so it can be retrieved after the redirect
+      localStorage.setItem('last_sso_provider_clicked', providerConfig.provider);
+      localStorage.setItem('last_sso_audience_clicked', providerConfig.audience);
+      
+      let finalUrl = res.providerUrl;
+      window.location.href = finalUrl;
     } catch (error) {
       console.error('[SSO Button] === UNEXPECTED ERROR ===');
       console.error('[SSO Button] Error details:', error);

@@ -40,6 +40,8 @@ export interface ForgotPasswordResponse {
 }
 
 export interface AccountActivationPayload {
+  firstname: string;
+  lastname: string;
   password: string;
   code: string;
   captchaCode: string;
@@ -52,7 +54,9 @@ export interface ISignupByEmailPayload {
 }
 export interface ISignupByEmailResponse {
   itemId: string | null;
-  errors: unknown | null;
+  errors: {
+    already_signup: string;
+  } | null;
   isSuccess: boolean;
 }
 
@@ -67,4 +71,12 @@ export interface IGetSignUpSettingResponse {
   tags: string[];
   isEmailPasswordSignUpEnabled: boolean;
   isSSoSignUpEnabled: boolean;
+}
+
+export interface ISignupByEmailErrorResponse {
+  errors?: {
+    already_signup: string;
+  } | null;
+  isSuccess?: boolean;
+  itemId?: string | null;
 }

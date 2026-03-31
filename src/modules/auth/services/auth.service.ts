@@ -61,6 +61,11 @@ export interface SignInResponse {
   enable_mfa: boolean;
   mfaId: string;
   mfaType: number;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  sso_user_redirect_url?: string;
 }
 
 export type PasswordSigninPayload = {
@@ -74,6 +79,11 @@ export type SSoSigninPayload = {
   grantType: 'social';
   code: string;
   state: string;
+};
+
+export type SSoConsentSigninPayload = {
+  grantType: 'sso_consent';
+  code: string;
 };
 
 export type MFASigninPayload = {
@@ -114,10 +124,10 @@ export const savedOrgId =
   typeof window !== 'undefined' ? window.localStorage.getItem('selected-org-id') : null;
 
 export const signin = async <
-  T extends 'password' | 'social' | 'mfa_code' | 'authorization_code' = 'password',
+  T extends 'password' | 'social' | 'mfa_code' | 'authorization_code' | 'sso_consent' = 'password',
 >(
-  payload: PasswordSigninPayload | MFASigninPayload | SigninBySSOPayload | SigninByBlocksOidcPayload
-): Promise<T extends 'password' | 'social' ? SignInResponse : MFASigninResponse> => {
+  payload: PasswordSigninPayload | MFASigninPayload | SigninBySSOPayload | SigninByBlocksOidcPayload | SSoConsentSigninPayload
+): Promise<T extends 'password' | 'social' | 'sso_consent' ? SignInResponse : MFASigninResponse> => {
   const url = getApiUrl('/idp/v1/Authentication/Token');
 
   // sign in flow
@@ -185,6 +195,29 @@ export const signin = async <
     const response = await fetch(url, {
       method: 'POST',
       body: signinBySSOData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-blocks-key': projectKey,
+      },
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new HttpError(response.status, err);
+    }
+
+    return response.json();
+  } else if (payload.grantType === 'sso_consent') {
+    const ssoConsentData = new URLSearchParams();
+    ssoConsentData.append('grant_type', 'sso_consent');
+    ssoConsentData.append('code', payload.code);
+
+    if (savedOrgId) {
+      ssoConsentData.append('org_id', savedOrgId);
+    }
+    const response = await fetch(url, {
+      method: 'POST',
+      body: ssoConsentData,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'x-blocks-key': projectKey,

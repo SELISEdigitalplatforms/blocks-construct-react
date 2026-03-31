@@ -19,6 +19,7 @@ import {
   Captcha,
   useCaptcha,
 } from '@/components/core';
+import { Input } from '@/components/ui-kit/input';
 
 /**
  * BasePasswordForm Component
@@ -58,15 +59,13 @@ import {
 
 interface BasePasswordFormProps {
   code: string;
-  onSubmit: (password: string, code: string, captchaToken?: string) => Promise<void>;
+  onSubmit: (password: string, code: string, captchaToken?: string, formData?: any) => Promise<void>;
   validationSchema: z.ZodSchema;
-  defaultValues: {
-    password: string;
-    confirmPassword: string;
-  };
+  defaultValues: any;
   isPending: boolean;
   isCaptchaValid?: boolean;
   onCaptchaValidation?: (isValid: boolean) => void;
+  showNameFields?: boolean;
 }
 
 export const BasePasswordForm = ({
@@ -76,6 +75,7 @@ export const BasePasswordForm = ({
   defaultValues,
   isPending,
   onCaptchaValidation,
+  showNameFields,
 }: Readonly<BasePasswordFormProps>) => {
   const navigate = useNavigate();
   const [requirementsMet, setRequirementsMet] = useState(false);
@@ -132,13 +132,13 @@ export const BasePasswordForm = ({
     }
   }, [captchaToken, onCaptchaValidation]);
 
-  const onSubmitHandler = async (values: { password: string; confirmPassword: string }) => {
+  const onSubmitHandler = async (values: any) => {
     if (captchaEnabled && !captchaToken) {
       return;
     }
 
     try {
-      await onSubmit(values.password, code, captchaEnabled ? captchaToken : undefined);
+      await onSubmit(values.password, code, captchaEnabled ? captchaToken : undefined, values);
       navigate('/success');
     } catch (_error) {
       // Handle error if needed
@@ -150,6 +150,37 @@ export const BasePasswordForm = ({
   return (
     <Form {...form}>
       <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmitHandler)}>
+        {showNameFields && (
+          <>
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-high-emphasis font-normal">{t('FIRST_NAME')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('ENTER_YOUR_FIRST_NAME')} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-high-emphasis font-normal">{t('LAST_NAME')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('ENTER_YOUR_LAST_NAME')} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
+
         <FormField
           control={form.control}
           name="password"
