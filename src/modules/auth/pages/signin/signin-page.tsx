@@ -11,7 +11,7 @@ export const SigninPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { mutateAsync: signinMutate } = useSigninMutation<'social'>();
+  const { mutateAsync: signinMutate } = useSigninMutation<'social'>({ suppressToast: true });
   const { login, setTokens } = useAuthStore();
   const isExchangingRef = useRef(false);
 
@@ -47,10 +47,8 @@ export const SigninPage = () => {
                 const params = new URLSearchParams();
 
                 url.searchParams.forEach((value, key) => {
-                  if (key.toLowerCase() === 'firstname') {
-                    params.set('firstname', value);
-                  } else if (key.toLowerCase() === 'lastname') {
-                    params.set('lastname', value);
+                  if (key.toLowerCase() === 'username') {
+                    params.set('email', value);
                   } else {
                     params.set(key, value);
                   }
@@ -74,29 +72,24 @@ export const SigninPage = () => {
           navigate('/', { replace: true });
         } catch (error: any) {
           console.error('SSO Callback error:', error);
-          const errData = error?.error || {};
 
           const errorPayloadStr =
             `${error?.message || ''} ${JSON.stringify(error?.error || {})} ${JSON.stringify(error || {})}`.toLowerCase();
           if (errorPayloadStr.includes('user_not_found')) {
-            const emailTarget =
-              error?.email ||
-              error?.response?.data?.email ||
-              error?.error?.email ||
-              errData?.email ||
-              errData?.error?.email ||
-              '';
+            const emailTarget = error?.error?.error_description?.split(' ')[0];
             const errorMsg = emailTarget
-              ? t('NO_SUCH_EMAIL_MESSAGE').replace('---', `(${emailTarget})`)
+              ? t('NO_SUCH_EMAIL_MESSAGE').replace('---', ` (${emailTarget})`)
               : t('NO_SUCH_EMAIL_MESSAGE').replace('---', ``);
             navigate(`/login`, { state: { ssoError: errorMsg } });
             isExchangingRef.current = false;
             return;
           }
+        } finally {
+          isExchangingRef.current = false;
         }
       })();
     }
-  }, [code, state, searchParams, signinMutate, login, setTokens, navigate]);
+  }, [code, state, searchParams, signinMutate, login, setTokens, navigate, t]);
 
   if (isSSOCallback) return <LoadingOverlay />;
   return <Signin />;

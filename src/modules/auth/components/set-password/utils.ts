@@ -1,6 +1,5 @@
 import {
   createPasswordValidationSchema,
-  PasswordFormType,
   passwordFormDefaultValues,
 } from '../../../../lib/utils/validation/password-validation';
 import { z } from 'zod';

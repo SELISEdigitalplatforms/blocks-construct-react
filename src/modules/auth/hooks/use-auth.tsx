@@ -55,7 +55,7 @@ import { getLoginOption } from '../services/sso.service';
 
 export const useSigninMutation = <
   T extends 'password' | 'mfa_code' | 'social' | 'authorization_code' | 'sso_consent',
->() => {
+>(options?: { suppressToast?: boolean }) => {
   const queryClient = useQueryClient();
   return useGlobalMutation<
     SignInResponse | MFASigninResponse,
@@ -70,6 +70,7 @@ export const useSigninMutation = <
     onError: (error) => {
       throw error;
     },
+    ...options,
   });
 };
 

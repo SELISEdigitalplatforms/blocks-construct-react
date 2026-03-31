@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Input } from '@/components/ui-kit/input';
 import { Button } from '@/components/ui-kit/button';
 import { Checkbox } from '@/components/ui-kit/checkbox';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -10,15 +9,7 @@ import { useAuthStore } from '@/state/store/auth';
 import { SSOservice } from '../../services/sso.service';
 import { SOCIAL_AUTH_PROVIDERS, SSO_PROVIDERS } from '@/constant/sso';
 
-export const SsoSignupForm = ({
-  firstName,
-  lastName,
-  email,
-}: {
-  firstName: string;
-  lastName: string;
-  email: string;
-}) => {
+export const SsoSignupForm = ({ email }: { email: string }) => {
   const { t } = useTranslation();
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [searchParams] = useSearchParams();
@@ -112,7 +103,7 @@ export const SsoSignupForm = ({
         </div>
       )}
       <div className="flex flex-col gap-4 mt-4">
-        {firstName && (
+        {/* {firstName && (
           <div>
             <label className="text-high-emphasis font-normal block mb-2">{t('FIRST_NAME')}</label>
             <Input value={firstName} disabled />
@@ -124,7 +115,7 @@ export const SsoSignupForm = ({
             <label className="text-high-emphasis font-normal block mb-2">{t('LAST_NAME')}</label>
             <Input value={lastName} disabled />
           </div>
-        )}
+        )} */}
 
         <div className="flex justify-between items-center">
           <div className="flex items-start gap-2 mt-5 mb-2">

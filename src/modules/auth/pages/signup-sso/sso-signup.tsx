@@ -9,10 +9,7 @@ export const SsoSignupPage = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const firstName = searchParams.get('firstname') ?? '';
-  const lastName = searchParams.get('lastname') ?? '';
-  // const email = searchParams.get('email') ?? '';
-  const username = searchParams.get('username') ?? '';
+  const email = searchParams.get('email') ?? '';
 
   return (
     <div className="flex flex-col gap-6">
@@ -33,7 +30,7 @@ export const SsoSignupPage = () => {
           {t('LOG_IN')}
         </Link>
       </div>
-      <SsoSignupForm firstName={firstName} lastName={lastName} email={username} />
+      <SsoSignupForm email={email} />
     </div>
   );
 };

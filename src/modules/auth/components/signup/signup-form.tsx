@@ -17,7 +17,6 @@ import { useSignupByEmail } from '../../hooks/use-auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { ISignupByEmailErrorResponse } from '../../types/auth.type';
 import { Checkbox } from '@/components/ui-kit/checkbox';
 
 /**
@@ -65,7 +64,7 @@ export const SignupForm = () => {
 
   const onSubmitHandler = async (values: signupFormType) => {
     try {
-      const res = await mutateAsync({
+      await mutateAsync({
         ...values,
         captchaCode,
       });
