@@ -8,9 +8,11 @@ import { SignInResponse } from '../../services/auth.service';
 import { useAuthStore } from '@/state/store/auth';
 import { SSOservice } from '../../services/sso.service';
 import { SOCIAL_AUTH_PROVIDERS, SSO_PROVIDERS } from '@/constant/sso';
+import { useToast } from '@/hooks/use-toast';
 
 export const SsoSignupForm = ({ email }: { email: string }) => {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -44,6 +46,13 @@ export const SsoSignupForm = ({ email }: { email: string }) => {
       setTokens({ accessToken: res.access_token, refreshToken: res.refresh_token ?? '' });
       navigate('/', { replace: true });
     } catch (error) {
+      if (JSON.stringify(error).includes('expire')) {
+        toast({
+          title: t('ERROR'),
+          description: t('SOMETHING_WENT_WRONG'),
+          variant: 'destructive',
+        });
+      }
       console.error('SSO signup consent failed:', error);
     }
   };

@@ -16,13 +16,24 @@ import { Button } from '@/components/ui-kit/button';
 import { useAuthStore } from '@/state/store/auth';
 import { useErrorHandler } from '@/hooks/use-error-handler';
 import { useSigninEmail } from '../../hooks/use-auth';
-import { ErrorAlert, PasswordInput } from '@/components/core';
+import { Captcha, ErrorAlert, PasswordInput, useCaptcha } from '@/components/core';
+import { useEffect, useRef, useState } from 'react';
+
+const FAILED_ATTEMPTS_KEY = 'signin-failed-attempts';
+const MAX_ATTEMPTS_BEFORE_CAPTCHA = 3;
 
 export const SigninEmail = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { login, setTokens } = useAuthStore();
   const { handleError } = useErrorHandler();
+
+  const failedAttemptsRef = useRef<number>(
+    parseInt(sessionStorage.getItem(FAILED_ATTEMPTS_KEY) || '0', 10)
+  );
+  const [showCaptcha, setShowCaptcha] = useState(
+    failedAttemptsRef.current >= MAX_ATTEMPTS_BEFORE_CAPTCHA
+  );
 
   const form = useForm({
     defaultValues: signinFormDefaultValue,
@@ -31,12 +42,38 @@ export const SigninEmail = () => {
 
   const { isPending, mutateAsync, isError } = useSigninEmail();
 
+  const googleSiteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY || '';
+  const captchaEnabled = googleSiteKey !== '';
+  const captchaType =
+    import.meta.env.VITE_CAPTCHA_TYPE === 'reCaptcha' ? 'reCaptcha-v2-checkbox' : 'hCaptcha';
+
+  const {
+    code: captchaCode,
+    captcha,
+    reset: resetCaptcha,
+  } = useCaptcha({
+    siteKey: googleSiteKey,
+    type: captchaType,
+  });
+
+  const { isValid } = form.formState;
+
+  useEffect(() => {
+    if (!isValid && captchaCode) resetCaptcha();
+  }, [captchaCode, isValid, resetCaptcha]);
+
   const onSubmitHandler = async (values: signinFormType) => {
     try {
       const res = await mutateAsync({
         username: values.username,
         password: values.password,
+        ...(showCaptcha && captchaCode ? { captchaCode } : {}),
       });
+
+      // Reset failed attempts on success
+      failedAttemptsRef.current = 0;
+      sessionStorage.removeItem(FAILED_ATTEMPTS_KEY);
+      setShowCaptcha(false);
 
       if (res.enable_mfa)
         return navigate(
@@ -47,9 +84,20 @@ export const SigninEmail = () => {
       setTokens({ accessToken: res.access_token ?? '', refreshToken: res.refresh_token ?? '' });
       navigate('/');
     } catch (error) {
+      // Increment failed attempts
+      failedAttemptsRef.current += 1;
+      sessionStorage.setItem(FAILED_ATTEMPTS_KEY, failedAttemptsRef.current.toString());
+
+      if (failedAttemptsRef.current >= MAX_ATTEMPTS_BEFORE_CAPTCHA) {
+        setShowCaptcha(true);
+      }
+
+      resetCaptcha();
       handleError(error);
     }
   };
+
+  const isCaptchaRequired = showCaptcha && captchaEnabled;
 
   return (
     <div className="w-full">
@@ -95,7 +143,18 @@ export const SigninEmail = () => {
               {t('FORGOT_PASSWORD')}
             </Link>
           </div>
-          <Button type="submit" className="w-full" disabled={isPending}>
+
+          {isCaptchaRequired && (
+            <div className="my-4">
+              <Captcha {...captcha} theme="light" size="normal" />
+            </div>
+          )}
+
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending || (isCaptchaRequired && !captchaCode)}
+          >
             {t('LOG_IN')}
           </Button>
         </form>

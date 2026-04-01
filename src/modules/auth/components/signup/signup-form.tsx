@@ -71,7 +71,7 @@ export const SignupForm = () => {
       return navigate(`/sent-email`);
     } catch (error) {
       const res = JSON.stringify(error);
-      if (res.includes('Email already in use')) {
+      if (res.includes('already_signup')) {
         setAlreadyRegisteredMessage(t('EMAIL_ALREADY_REGISTERED'));
       }
       resetCaptcha();
