@@ -9,7 +9,9 @@ import {
   ISignupByEmailPayload,
   ISignupByEmailResponse,
   IGetSignUpSettingResponse,
+  ActivationCodeExpirationResponse,
 } from '../types/auth.type';
+export type { ActivationCodeExpirationResponse };
 
 /**
  * Authentication API Utilities
@@ -126,8 +128,15 @@ export const savedOrgId =
 export const signin = async <
   T extends 'password' | 'social' | 'mfa_code' | 'authorization_code' | 'sso_consent' = 'password',
 >(
-  payload: PasswordSigninPayload | MFASigninPayload | SigninBySSOPayload | SigninByBlocksOidcPayload | SSoConsentSigninPayload
-): Promise<T extends 'password' | 'social' | 'sso_consent' ? SignInResponse : MFASigninResponse> => {
+  payload:
+    | PasswordSigninPayload
+    | MFASigninPayload
+    | SigninBySSOPayload
+    | SigninByBlocksOidcPayload
+    | SSoConsentSigninPayload
+): Promise<
+  T extends 'password' | 'social' | 'sso_consent' ? SignInResponse : MFASigninResponse
+> => {
   const url = getApiUrl('/idp/v1/Authentication/Token');
 
   // sign in flow
@@ -297,6 +306,14 @@ export const getRefreshToken = async () => {
   return response.json();
 };
 
+export const validateActivationCode = async (payload: {
+  activationCode: string;
+  projectKey: string;
+}): Promise<ActivationCodeExpirationResponse> => {
+  const url = '/idp/v1/Iam/ValidateActivationCode';
+  return clients.post(url, JSON.stringify(payload));
+};
+
 export const accountActivation = async (data: AccountActivationPayload) => {
   const payload = {
     ...data,
@@ -328,14 +345,9 @@ export const resetPassword = async (data: { code: string; password: string }) =>
   return clients.post(url, JSON.stringify(payload));
 };
 
-export const resendActivation = async (data: { userId: string }) => {
-  const payload = {
-    ...data,
-    mailPurpose: 'ResendActivation',
-  };
-
+export const resendActivation = async (data: { userId: string; projectKey?: string }) => {
   const url = '/idp/v1/Iam/ResendActivation';
-  return clients.post(url, JSON.stringify(payload));
+  return clients.post(url, JSON.stringify(data));
 };
 
 export const logoutAll = async () => {
@@ -348,6 +360,10 @@ export const signinByEmail = (payload: SigninEmailPayload): Promise<SigninEmailR
   body.append('grant_type', 'password');
   body.append('username', payload.username);
   body.append('password', payload.password);
+
+  if (payload.captchaCode) {
+    body.append('captcha_code', payload.captchaCode);
+  }
 
   if (savedOrgId) {
     body.append('org_id', savedOrgId);

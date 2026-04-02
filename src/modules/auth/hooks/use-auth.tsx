@@ -17,6 +17,8 @@ import {
   signupByEmail,
   getSignupSettings,
   SSoConsentSigninPayload,
+  validateActivationCode,
+  ActivationCodeExpirationResponse,
 } from '../services/auth.service';
 import { useGlobalMutation, useGlobalQuery } from '../../../state/query-client/hooks';
 import { ErrorResponse } from '../../../hooks/use-error-handler';
@@ -55,12 +57,18 @@ import { getLoginOption } from '../services/sso.service';
 
 export const useSigninMutation = <
   T extends 'password' | 'mfa_code' | 'social' | 'authorization_code' | 'sso_consent',
->(options?: { suppressToast?: boolean }) => {
+>(options?: {
+  suppressToast?: boolean;
+}) => {
   const queryClient = useQueryClient();
   return useGlobalMutation<
     SignInResponse | MFASigninResponse,
     ErrorResponse,
-    PasswordSigninPayload | MFASigninPayload | SSoSigninPayload | SigninByBlocksOidcPayload | SSoConsentSigninPayload
+    | PasswordSigninPayload
+    | MFASigninPayload
+    | SSoSigninPayload
+    | SigninByBlocksOidcPayload
+    | SSoConsentSigninPayload
   >({
     mutationKey: ['signin'],
     mutationFn: async (payload) => signin<T>(payload),
@@ -112,7 +120,7 @@ export const useResetPassword = () => {
 };
 
 export const useResendActivation = () => {
-  return useGlobalMutation<unknown, ErrorResponse, { userId: string }>({
+  return useGlobalMutation<unknown, ErrorResponse, { userId: string; projectKey?: string }>({
     mutationKey: ['resendActivation'],
     mutationFn: resendActivation,
     onError: (error) => {
@@ -174,5 +182,19 @@ export const useGetSignupSettings = () => {
   return useGlobalQuery({
     queryKey: ['getSignupSettings'],
     queryFn: getSignupSettings,
+  });
+};
+
+export const useValidateActivationCodeMutation = () => {
+  return useGlobalMutation<
+    ActivationCodeExpirationResponse,
+    ErrorResponse,
+    { activationCode: string; projectKey: string }
+  >({
+    mutationKey: ['validateActivationCode'],
+    mutationFn: validateActivationCode,
+    onError: (error) => {
+      throw error;
+    },
   });
 };

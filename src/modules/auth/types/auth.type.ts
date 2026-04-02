@@ -1,6 +1,7 @@
 export interface SigninEmailPayload {
   username: string;
   password: string;
+  captchaCode?: string;
 }
 
 export interface SigninEmailTokenResponse {
@@ -15,6 +16,12 @@ export interface SigninEmailMfaResponse {
   message: string;
   mfaType: number;
   mfaId: string;
+}
+
+export interface ActivationCodeExpirationResponse {
+  errors: unknown | null;
+  isSuccess: boolean;
+  userId: string;
 }
 
 export interface SigninEmailResponse {
