@@ -4,7 +4,6 @@ import lightLogo from '@/assets/images/construct_logo_light.svg';
 import { useTheme } from '@/styles/theme/theme-provider';
 import { SsoSignupForm } from '@/modules/auth/components/sso-signup/sso-signup-form';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
-import { useGetLoginOptions } from '../../hooks/use-auth';
 
 export const SsoSignupPage = () => {
   const { theme } = useTheme();

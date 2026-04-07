@@ -57,7 +57,7 @@ export function useSsoActivation(provider?: string) {
           return navigate('/dashboard', { replace: true });
         }
 
-        let activationPath =
+        const activationPath =
           'sso_user_redirect_url' in res && res.sso_user_redirect_url
             ? getSsoActivationPath(res.sso_user_redirect_url, provider)
             : null;
@@ -100,7 +100,18 @@ export function useSsoActivation(provider?: string) {
     }
 
     activate();
-  }, [code, state, mutateAsync, navigate, login, setUnAuthenticated, provider, toast]);
+  }, [
+    code,
+    state,
+    mutateAsync,
+    navigate,
+    login,
+    setUnAuthenticated,
+    provider,
+    toast,
+    setTokens,
+    t,
+  ]);
 
   return { isPending };
 }
