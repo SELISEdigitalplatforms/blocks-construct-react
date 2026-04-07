@@ -9,6 +9,6 @@ export const publicRoutes = [
   '/activate-failed',
   '/forgot-password',
   '/verify-mfa',
-  '/sso-activation',
+  '/sso/:provider/callback',
   '/oidc',
 ];

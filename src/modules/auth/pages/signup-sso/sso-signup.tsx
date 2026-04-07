@@ -3,13 +3,17 @@ import darkLogo from '@/assets/images/construct_logo_dark.svg';
 import lightLogo from '@/assets/images/construct_logo_light.svg';
 import { useTheme } from '@/styles/theme/theme-provider';
 import { SsoSignupForm } from '@/modules/auth/components/sso-signup/sso-signup-form';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
+import { useGetLoginOptions } from '../../hooks/use-auth';
 
 export const SsoSignupPage = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const email = searchParams.get('email') ?? '';
+  const provider = searchParams.get('provider') ?? '';
+
+  if (!email || !provider) return <Navigate to="/login" replace />;
 
   return (
     <div className="flex flex-col gap-6">
@@ -30,7 +34,7 @@ export const SsoSignupPage = () => {
           {t('LOG_IN')}
         </Link>
       </div>
-      <SsoSignupForm email={email} />
+      <SsoSignupForm email={email} provider={provider} />
     </div>
   );
 };
