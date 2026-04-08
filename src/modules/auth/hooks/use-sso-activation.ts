@@ -36,8 +36,15 @@ export function useSsoActivation(provider?: string) {
   const effectRan = useRef(false);
 
   useEffect(() => {
-    if (!code || !state) return;
-    if (effectRan.current) return;
+    if (!code || !state) {
+      navigate('/login', { replace: true });
+      return;
+    }
+
+    if (effectRan.current) {
+      navigate('/login', { replace: true });
+      return;
+    }
 
     effectRan.current = true;
 
