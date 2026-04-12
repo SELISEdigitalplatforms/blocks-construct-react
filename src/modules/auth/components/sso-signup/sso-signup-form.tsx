@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui-kit/button';
 import { Checkbox } from '@/components/ui-kit/checkbox';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useSigninMutation } from '../../hooks/use-auth';
+import { useSigninMutation, useGetLoginOptions } from '../../hooks/use-auth';
 import { SignInResponse } from '../../services/auth.service';
 import { useAuthStore } from '@/state/store/auth';
 import { SSOservice } from '../../services/sso.service';
 import { SOCIAL_AUTH_PROVIDERS, SSO_PROVIDERS } from '@/constant/sso';
 import { useToast } from '@/hooks/use-toast';
 
-export const SsoSignupForm = ({ email }: { email: string }) => {
+export const SsoSignupForm = ({ email, provider }: { email: string; provider: string }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
@@ -19,8 +19,8 @@ export const SsoSignupForm = ({ email }: { email: string }) => {
   const code = searchParams.get('code') || '';
   const { mutateAsync: signinMutate } = useSigninMutation<'sso_consent'>();
   const { login, setTokens } = useAuthStore();
-  const provider = (localStorage.getItem('last_sso_provider_clicked') as SSO_PROVIDERS) || '';
-  const audience = localStorage.getItem('last_sso_audience_clicked') || '';
+  const { data: loginOptions } = useGetLoginOptions();
+  const audience = loginOptions?.ssoInfo?.find((info) => info.provider === provider)?.audience;
   const displayProvider = provider ? provider.charAt(0).toUpperCase() + provider.slice(1) : '';
 
   const onSubmitHandler = async () => {
@@ -95,7 +95,7 @@ export const SsoSignupForm = ({ email }: { email: string }) => {
       {displayProvider && email && (
         <div className="flex flex-row mb-4 text-sm text-medium-emphasis gap-2">
           <img
-            src={SOCIAL_AUTH_PROVIDERS[provider].imageSrc}
+            src={SOCIAL_AUTH_PROVIDERS[provider as SSO_PROVIDERS].imageSrc}
             width={16}
             height={16}
             alt={`${provider} logo`}
@@ -112,20 +112,6 @@ export const SsoSignupForm = ({ email }: { email: string }) => {
         </div>
       )}
       <div className="flex flex-col gap-4 mt-4">
-        {/* {firstName && (
-          <div>
-            <label className="text-high-emphasis font-normal block mb-2">{t('FIRST_NAME')}</label>
-            <Input value={firstName} disabled />
-          </div>
-        )}
-
-        {lastName && (
-          <div>
-            <label className="text-high-emphasis font-normal block mb-2">{t('LAST_NAME')}</label>
-            <Input value={lastName} disabled />
-          </div>
-        )} */}
-
         <div className="flex justify-between items-center">
           <div className="flex items-start gap-2 mt-5 mb-2">
             <Checkbox

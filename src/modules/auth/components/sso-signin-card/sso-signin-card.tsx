@@ -83,10 +83,6 @@ const SSOSigninCard = ({
         return alert('No redirect URL received from the authentication service.');
       }
 
-      // Store the clicked provider in localStorage so it can be retrieved after the redirect
-      localStorage.setItem('last_sso_provider_clicked', providerConfig.provider);
-      localStorage.setItem('last_sso_audience_clicked', providerConfig.audience);
-
       window.location.href = res.providerUrl;
     } catch (error) {
       console.error('[SSO Button] === UNEXPECTED ERROR ===');
