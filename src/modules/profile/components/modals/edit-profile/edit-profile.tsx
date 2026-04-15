@@ -275,7 +275,7 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
             <FormField
               control={control}
               name="fullName"
-              rules={{ required: t('FULL_NAME_IS_REQUIRED') }}
+              rules={{ required: t('FULL_NAME_REQUIRED') }}
               render={({ field }) => (
                 <FormItem className="col-span-1 sm:col-span-2">
                   <Label>{t('FULL_NAME')}*</Label>
@@ -303,7 +303,7 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
               name="phoneNumber"
               rules={{
                 validate: (value) => {
-                  if (!value) return t('PHONE_NUMBER_IS_REQUIRED');
+                  if (!value) return t('PHONE_NUMBER_REQUIRED');
                   if (!isPossiblePhoneNumber(value)) return t('PHONE_NUMBER_LENGTH_INVALID');
                   if (!isValidPhoneNumber(value)) return t('INVALID_PHONE_NUMBER');
                   return true;
