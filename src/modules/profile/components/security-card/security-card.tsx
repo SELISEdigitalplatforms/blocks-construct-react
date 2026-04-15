@@ -164,6 +164,7 @@ export const SecurityCard = ({
               {t('UPDATE_PASSWORD')}
             </Button>
             <ChangePassword
+              key={isChangePasswordModalOpen ? 'open' : 'closed'}
               onClose={() => setIsChangePasswordModalOpen(false)}
               open={isChangePasswordModalOpen}
               onOpenChange={setIsChangePasswordModalOpen}

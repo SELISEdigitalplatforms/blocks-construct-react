@@ -278,7 +278,7 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
               rules={{ required: t('FULL_NAME_REQUIRED') }}
               render={({ field }) => (
                 <FormItem className="col-span-1 sm:col-span-2">
-                  <Label>{t('FULL_NAME')}*</Label>
+                  <Label>{t('FULL_NAME')} *</Label>
                   <FormControl>
                     <Input {...field} placeholder={t('ENTER_YOUR_FULL_NAME')} />
                   </FormControl>
@@ -311,7 +311,7 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
               }}
               render={({ field }) => (
                 <FormItem>
-                  <Label>{t('MOBILE_NO')}</Label>
+                  <Label>{t('MOBILE_NO')} *</Label>
                   <FormControl>
                     <UIPhoneInput
                       {...field}
@@ -331,7 +331,11 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
             <Button variant="outline" type="button" onClick={onClose}>
               {t('CANCEL')}
             </Button>
-            <Button type="submit" loading={isPending} disabled={isPending || !isFormChanged}>
+            <Button
+              type="submit"
+              loading={isPending}
+              disabled={isPending || !isFormChanged || !form.getValues('fullName').trim()}
+            >
               {isPending ? t('SAVING') : t('SAVE')}
             </Button>
           </DialogFooter>
