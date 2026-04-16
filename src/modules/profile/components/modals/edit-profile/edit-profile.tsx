@@ -115,15 +115,16 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
       setValue('email', userInfo.email ?? '');
       setValue('phoneNumber', userInfo.phoneNumber ?? '');
       setValue('itemId', userInfo.itemId ?? '');
+      setValue('profileImageUrl', userInfo.profileImageUrl ?? '');
       setPreviewImage(userInfo.profileImageUrl || DummyProfile);
     }
   }, [userInfo, setValue]);
 
   useEffect(() => {
     const initialValues = {
-      fullName: `${userInfo.firstName} ${userInfo.lastName}`,
-      phoneNumber: userInfo.phoneNumber,
-      profileImageUrl: userInfo.profileImageUrl || '',
+      fullName: `${userInfo.firstName ?? ''} ${userInfo.lastName ?? ''}`.trim(),
+      phoneNumber: userInfo.phoneNumber ?? '',
+      profileImageUrl: userInfo.profileImageUrl ?? '',
     };
 
     setIsFormChanged(
