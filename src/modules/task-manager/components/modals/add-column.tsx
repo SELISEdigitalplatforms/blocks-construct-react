@@ -48,7 +48,7 @@ export function AddColumn({ onAddColumn }: Readonly<AddColumnProps>) {
   };
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={() => setNewColumnTitle('')}>
       <DialogTrigger asChild>
         <Button variant="secondary" className="flex items-center bg-white hover:bg-white w-80">
           <Plus className="h-4 w-4" />

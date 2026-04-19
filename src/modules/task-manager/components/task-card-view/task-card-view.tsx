@@ -335,10 +335,13 @@ export const TaskCardView = ({
       />
 
       <Dialog open={isNewTaskModalOpen} onOpenChange={setNewTaskModalOpen}>
-        <TaskDetailsView
-          onClose={() => setNewTaskModalOpen(false)}
-          isNewTaskModalOpen={isNewTaskModalOpen}
-        />
+        {isNewTaskModalOpen && (
+          <TaskDetailsView
+            key={`new-task-${isNewTaskModalOpen}`}
+            onClose={() => setNewTaskModalOpen(false)}
+            isNewTaskModalOpen={isNewTaskModalOpen}
+          />
+        )}
       </Dialog>
     </div>
   );

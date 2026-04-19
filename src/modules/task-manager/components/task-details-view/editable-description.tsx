@@ -61,6 +61,7 @@ const EditableDescription = forwardRef<EditableDescriptionRef, EditableDescripti
   ({ taskId, initialContent, onContentChange, onSave, isNewTask = false }, ref) => {
     const { task, updateTaskDetails } = useTaskDetails(taskId);
     const [content, setContent] = useState(initialContent);
+    const [backupContent, setBackupContent] = useState(initialContent);
     const [isEditing, setIsEditing] = useState(isNewTask);
     const editorContainerRef = useRef<HTMLDivElement>(null);
     const [isHovering, setIsHovering] = useState(false);
@@ -72,11 +73,13 @@ const EditableDescription = forwardRef<EditableDescriptionRef, EditableDescripti
     useEffect(() => {
       if (initialContent && !content) {
         setContent(initialContent);
+        setBackupContent(initialContent);
         if (!isNewTask) {
           setIsEditing(false);
         }
       } else if (!isEditing) {
         setContent(initialContent);
+        setBackupContent(initialContent);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initialContent, isNewTask]);
@@ -148,7 +151,8 @@ const EditableDescription = forwardRef<EditableDescriptionRef, EditableDescripti
     };
 
     const handleCancel = () => {
-      setContent(initialContent);
+      setContent(backupContent);
+      onContentChange?.(backupContent);
       setIsEditing(false);
       setForceRender((prev) => prev + 1);
     };
@@ -298,6 +302,7 @@ const EditableDescription = forwardRef<EditableDescriptionRef, EditableDescripti
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              setBackupContent(content);
               setIsEditing(true);
             }}
             aria-label={t('EDIT_DESCRIPTION')}
