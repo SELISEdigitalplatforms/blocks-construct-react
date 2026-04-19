@@ -71,11 +71,11 @@ export function useSsoActivation(provider?: string) {
 
         if (activationPath) {
           return navigate(activationPath, { replace: true });
-        } else if ('enable_mfa' in res && res.enable_mfa) {
-          return navigate(`/mfa-check?mfa_id=${res.mfaId}&mfa_type=${res.mfaType}`);
-        } else {
-          navigate('/login', { replace: true });
         }
+        if ('enable_mfa' in res && res.enable_mfa) {
+          return navigate(`/verify-mfa?mfa_id=${res.mfaId}&mfa_type=${res.mfaType}`);
+        }
+        navigate('/login', { replace: true });
       } catch (error: any) {
         console.error('SSO Callback error:', error);
         setUnAuthenticated();
