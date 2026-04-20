@@ -1,10 +1,12 @@
 import { ColumnDef } from '@tanstack/react-table';
+import { DateRange } from 'react-day-picker';
 import { Badge } from '@/components/ui-kit/badge';
 import { DataTableColumnHeader } from '@/components/core';
 import { compareValues } from '../../services/user-service';
 import { IamData } from '../../types/user.types';
 import { DataTableRowActions } from './iam-table-row-actions';
 import { CustomtDateFormat } from '@/lib/utils/custom-date/custom-date';
+import { isIamDateInFilterRange } from '../../utils/iam-date-range-filter';
 
 /**
  * Creates the columns for the IAM (Identity and Access Management) table.
@@ -57,6 +59,14 @@ interface ColumnFactoryProps {
   onResendActivation?: (user: IamData) => void;
   t: (key: string) => string;
 }
+
+const dateRangeFilterFn =
+  (accessor: 'createdDate' | 'lastLoggedInTime') =>
+  (row: { getValue: (id: string) => unknown }, id: string, filterValue: DateRange | undefined) => {
+    const raw = row.getValue(id);
+    const rowDate = new Date(raw as string);
+    return isIamDateInFilterRange(rowDate, filterValue, accessor);
+  };
 
 export const createIamTableColumns = ({
   onViewDetails,
@@ -121,11 +131,7 @@ export const createIamTableColumns = ({
       const b = new Date(rowB.original.createdDate).getTime();
       return compareValues(a, b);
     },
-    filterFn: (row, id, value) => {
-      if (!value?.from || !value?.to) return true;
-      const rowDate = new Date(row.getValue(id));
-      return rowDate >= value.from && rowDate <= value.to;
-    },
+    filterFn: dateRangeFilterFn('createdDate'),
   },
   {
     id: 'lastLoggedInTime',
@@ -147,11 +153,7 @@ export const createIamTableColumns = ({
       const b = new Date(rowB.original.lastLoggedInTime).getTime();
       return compareValues(a, b);
     },
-    filterFn: (row, id, value) => {
-      if (!value?.from || !value?.to) return true;
-      const rowDate = new Date(row.getValue(id));
-      return rowDate >= value.from && rowDate <= value.to;
-    },
+    filterFn: dateRangeFilterFn('lastLoggedInTime'),
   },
   {
     id: 'active',

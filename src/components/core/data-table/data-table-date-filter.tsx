@@ -65,9 +65,9 @@ export const DateRangeFilter = <TData, TValue>({
     setLocalDateRange(selectedDateRange);
     onDateChange(selectedDateRange);
 
-    if (selectedDateRange?.from && selectedDateRange?.to) {
+    if (selectedDateRange?.from) {
       column?.setFilterValue(selectedDateRange);
-    } else if (!selectedDateRange?.from) {
+    } else {
       column?.setFilterValue(undefined);
     }
   };
