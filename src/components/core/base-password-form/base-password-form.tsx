@@ -59,7 +59,12 @@ import { Input } from '@/components/ui-kit/input';
 
 interface BasePasswordFormProps {
   code: string;
-  onSubmit: (password: string, code: string, captchaToken?: string, formData?: any) => Promise<void>;
+  onSubmit: (
+    password: string,
+    code: string,
+    captchaToken?: string,
+    formData?: any
+  ) => Promise<void>;
   validationSchema: z.ZodSchema;
   defaultValues: any;
   isPending: boolean;
@@ -100,6 +105,8 @@ export const BasePasswordForm = ({
 
   const password = form.watch('password');
   const confirmPassword = form.watch('confirmPassword');
+  const firstName = form.watch('firstName');
+  const lastName = form.watch('lastName');
 
   useEffect(() => {
     if (
@@ -145,11 +152,21 @@ export const BasePasswordForm = ({
     }
   };
 
-  const isSubmitDisabled = isPending || !requirementsMet || (captchaEnabled && !captchaToken);
+  const nameFieldsValid = !showNameFields || (!!firstName?.trim() && !!lastName?.trim());
+
+  const isSubmitDisabled =
+    isPending || !requirementsMet || (captchaEnabled && !captchaToken) || !nameFieldsValid;
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmitHandler)}>
+      <form
+        className="flex flex-col gap-4 max-h-[75vh] overflow-y-auto pr-5"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'hsl(var(--neutral-300)) transparent',
+        }}
+        onSubmit={form.handleSubmit(onSubmitHandler)}
+      >
         {showNameFields && (
           <>
             <FormField
@@ -157,7 +174,9 @@ export const BasePasswordForm = ({
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-high-emphasis font-normal">{t('FIRST_NAME')}</FormLabel>
+                  <FormLabel className="text-high-emphasis font-normal">
+                    {t('FIRST_NAME')}
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder={t('ENTER_YOUR_FIRST_NAME')} {...field} />
                   </FormControl>
