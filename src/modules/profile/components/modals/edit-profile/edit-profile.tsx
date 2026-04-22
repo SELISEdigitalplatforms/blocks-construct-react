@@ -115,15 +115,16 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
       setValue('email', userInfo.email ?? '');
       setValue('phoneNumber', userInfo.phoneNumber ?? '');
       setValue('itemId', userInfo.itemId ?? '');
+      setValue('profileImageUrl', userInfo.profileImageUrl ?? '');
       setPreviewImage(userInfo.profileImageUrl || DummyProfile);
     }
   }, [userInfo, setValue]);
 
   useEffect(() => {
     const initialValues = {
-      fullName: `${userInfo.firstName} ${userInfo.lastName}`,
-      phoneNumber: userInfo.phoneNumber,
-      profileImageUrl: userInfo.profileImageUrl || '',
+      fullName: `${userInfo.firstName ?? ''} ${userInfo.lastName ?? ''}`.trim(),
+      phoneNumber: userInfo.phoneNumber ?? '',
+      profileImageUrl: userInfo.profileImageUrl ?? '',
     };
 
     setIsFormChanged(
@@ -275,10 +276,10 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
             <FormField
               control={control}
               name="fullName"
-              rules={{ required: t('FULL_NAME_IS_REQUIRED') }}
+              rules={{ required: t('FULL_NAME_REQUIRED') }}
               render={({ field }) => (
                 <FormItem className="col-span-1 sm:col-span-2">
-                  <Label>{t('FULL_NAME')}*</Label>
+                  <Label>{t('FULL_NAME')} *</Label>
                   <FormControl>
                     <Input {...field} placeholder={t('ENTER_YOUR_FULL_NAME')} />
                   </FormControl>
@@ -303,7 +304,7 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
               name="phoneNumber"
               rules={{
                 validate: (value) => {
-                  if (!value) return t('PHONE_NUMBER_IS_REQUIRED');
+                  if (!value) return t('PHONE_NUMBER_REQUIRED');
                   if (!isPossiblePhoneNumber(value)) return t('PHONE_NUMBER_LENGTH_INVALID');
                   if (!isValidPhoneNumber(value)) return t('INVALID_PHONE_NUMBER');
                   return true;
@@ -311,7 +312,7 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
               }}
               render={({ field }) => (
                 <FormItem>
-                  <Label>{t('MOBILE_NO')}</Label>
+                  <Label>{t('MOBILE_NO')} *</Label>
                   <FormControl>
                     <UIPhoneInput
                       {...field}
@@ -331,7 +332,11 @@ export function EditProfile({ userInfo, onClose }: Readonly<EditProfileProps>) {
             <Button variant="outline" type="button" onClick={onClose}>
               {t('CANCEL')}
             </Button>
-            <Button type="submit" loading={isPending} disabled={isPending || !isFormChanged}>
+            <Button
+              type="submit"
+              loading={isPending}
+              disabled={isPending || !isFormChanged || !form.getValues('fullName').trim()}
+            >
               {isPending ? t('SAVING') : t('SAVE')}
             </Button>
           </DialogFooter>

@@ -175,13 +175,22 @@ export const useGlobalQuery = <
  * });
  */
 
+export type GlobalMutationOptions<
+  TData = unknown,
+  TError = ApiError,
+  TVariables = void,
+  TContext = unknown,
+> = UseMutationOptions<TData, TError, TVariables, TContext> & {
+  suppressToast?: boolean;
+};
+
 export const useGlobalMutation = <
   TData = unknown,
   TError = ApiError,
   TVariables = void,
   TContext = unknown,
 >(
-  option: UseMutationOptions<TData, TError, TVariables, TContext>
+  option: GlobalMutationOptions<TData, TError, TVariables, TContext>
 ) => {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
@@ -198,26 +207,28 @@ export const useGlobalMutation = <
         return;
       }
 
-      // Handle validation errors
-      if (apiError.error?.error === 'validation_failed' && apiError.error?.details) {
+      if (!option.suppressToast) {
+        // Handle validation errors
+        if (apiError.error?.error === 'validation_failed' && apiError.error?.details) {
+          handleError(apiError, {
+            variant: 'destructive',
+          });
+          return;
+        }
+
+        // Handle specific error messages
+        if (apiError.error_description || apiError.error?.message) {
+          handleError(apiError, {
+            variant: 'destructive',
+          });
+          return;
+        }
+
+        // Default error handling
         handleError(apiError, {
           variant: 'destructive',
         });
-        return;
       }
-
-      // Handle specific error messages
-      if (apiError.error_description || apiError.error?.message) {
-        handleError(apiError, {
-          variant: 'destructive',
-        });
-        return;
-      }
-
-      // Default error handling
-      handleError(apiError, {
-        variant: 'destructive',
-      });
 
       // Call the original onError if provided
       option.onError?.(errorData, variables, onMutateResult as any, context as any);

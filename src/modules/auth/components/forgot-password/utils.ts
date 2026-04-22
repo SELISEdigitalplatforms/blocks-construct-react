@@ -4,7 +4,7 @@ export const getForgotPasswordFormValidationSchema = (t: (key: string) => string
   z.object({
     email: z
       .string()
-      .email({ message: t('EMAIL_NAME_INVALID') })
+      .email({ message: t('INVALID_EMAIL_ADDRESS') })
       .min(1, { message: t('EMAIL_NAME_CANT_EMPTY') }),
   });
 

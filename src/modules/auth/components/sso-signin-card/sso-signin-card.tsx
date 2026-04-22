@@ -82,6 +82,7 @@ const SSOSigninCard = ({
       if (!res.providerUrl) {
         return alert('No redirect URL received from the authentication service.');
       }
+
       window.location.href = res.providerUrl;
     } catch (error) {
       console.error('[SSO Button] === UNEXPECTED ERROR ===');

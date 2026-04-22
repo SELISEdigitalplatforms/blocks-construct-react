@@ -24,10 +24,10 @@ export const EmailSentPage = () => {
 
       <Link to="/login">
         <Button className="font-extrabold w-full" size="lg" type="submit">
-          {t('LOG_IN')}
+          {t('GO_TO_LOGIN')}
         </Button>
       </Link>
-      <Link to="/forgot-password">
+      <Link to="/signup">
         <Button
           className="font-extrabold text-primary w-full"
           size="lg"

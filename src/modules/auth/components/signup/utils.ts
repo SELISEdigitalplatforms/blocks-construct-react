@@ -16,14 +16,14 @@ import { z } from 'zod';
 
 export const getSignupFormValidationSchema = (t: (key: string) => string) =>
   z.object({
-    username: z
+    email: z
       .string()
-      .email({ message: t('EMAIL_NAME_INVALID') })
-      .min(1, { message: t('USER_NAME_CANT_EMPTY') }),
+      .email({ message: t('INVALID_EMAIL_ADDRESS') })
+      .min(1, { message: t('EMAIL_NAME_CANT_EMPTY') }),
   });
 
 export type signupFormType = z.infer<ReturnType<typeof getSignupFormValidationSchema>>;
 
 export const signupFormDefaultValue: signupFormType = {
-  username: '',
+  email: '',
 };

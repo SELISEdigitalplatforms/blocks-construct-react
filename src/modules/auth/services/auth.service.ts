@@ -6,7 +6,12 @@ import {
   ForgotPasswordResponse,
   SigninEmailPayload,
   SigninEmailResponse,
+  ISignupByEmailPayload,
+  ISignupByEmailResponse,
+  IGetSignUpSettingResponse,
+  ActivationCodeExpirationResponse,
 } from '../types/auth.type';
+export type { ActivationCodeExpirationResponse };
 
 /**
  * Authentication API Utilities
@@ -58,6 +63,11 @@ export interface SignInResponse {
   enable_mfa: boolean;
   mfaId: string;
   mfaType: number;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  sso_user_redirect_url?: string;
 }
 
 export type PasswordSigninPayload = {
@@ -71,6 +81,11 @@ export type SSoSigninPayload = {
   grantType: 'social';
   code: string;
   state: string;
+};
+
+export type SSoConsentSigninPayload = {
+  grantType: 'sso_consent';
+  code: string;
 };
 
 export type MFASigninPayload = {
@@ -111,10 +126,17 @@ export const savedOrgId =
   typeof window !== 'undefined' ? window.localStorage.getItem('selected-org-id') : null;
 
 export const signin = async <
-  T extends 'password' | 'social' | 'mfa_code' | 'authorization_code' = 'password',
+  T extends 'password' | 'social' | 'mfa_code' | 'authorization_code' | 'sso_consent' = 'password',
 >(
-  payload: PasswordSigninPayload | MFASigninPayload | SigninBySSOPayload | SigninByBlocksOidcPayload
-): Promise<T extends 'password' | 'social' ? SignInResponse : MFASigninResponse> => {
+  payload:
+    | PasswordSigninPayload
+    | MFASigninPayload
+    | SigninBySSOPayload
+    | SigninByBlocksOidcPayload
+    | SSoConsentSigninPayload
+): Promise<
+  T extends 'password' | 'social' | 'sso_consent' ? SignInResponse : MFASigninResponse
+> => {
   const url = getApiUrl('/idp/v1/Authentication/Token');
 
   // sign in flow
@@ -194,6 +216,29 @@ export const signin = async <
     }
 
     return response.json();
+  } else if (payload.grantType === 'sso_consent') {
+    const ssoConsentData = new URLSearchParams();
+    ssoConsentData.append('grant_type', 'sso_consent');
+    ssoConsentData.append('code', payload.code);
+
+    if (savedOrgId) {
+      ssoConsentData.append('org_id', savedOrgId);
+    }
+    const response = await fetch(url, {
+      method: 'POST',
+      body: ssoConsentData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-blocks-key': projectKey,
+      },
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new HttpError(response.status, err);
+    }
+
+    return response.json();
   } else {
     // MFA OTP Verification flow
     const mfaFormData = new URLSearchParams();
@@ -261,6 +306,14 @@ export const getRefreshToken = async () => {
   return response.json();
 };
 
+export const validateActivationCode = async (payload: {
+  activationCode: string;
+  projectKey: string;
+}): Promise<ActivationCodeExpirationResponse> => {
+  const url = '/idp/v1/Iam/ValidateActivationCode';
+  return clients.post(url, JSON.stringify(payload));
+};
+
 export const accountActivation = async (data: AccountActivationPayload) => {
   const payload = {
     ...data,
@@ -292,14 +345,9 @@ export const resetPassword = async (data: { code: string; password: string }) =>
   return clients.post(url, JSON.stringify(payload));
 };
 
-export const resendActivation = async (data: { userId: string }) => {
-  const payload = {
-    ...data,
-    mailPurpose: 'ResendActivation',
-  };
-
+export const resendActivation = async (data: { userId: string; projectKey?: string }) => {
   const url = '/idp/v1/Iam/ResendActivation';
-  return clients.post(url, JSON.stringify(payload));
+  return clients.post(url, JSON.stringify(data));
 };
 
 export const logoutAll = async () => {
@@ -312,6 +360,10 @@ export const signinByEmail = (payload: SigninEmailPayload): Promise<SigninEmailR
   body.append('grant_type', 'password');
   body.append('username', payload.username);
   body.append('password', payload.password);
+
+  if (payload.captchaCode) {
+    body.append('captcha_code', payload.captchaCode);
+  }
 
   if (savedOrgId) {
     body.append('org_id', savedOrgId);
@@ -346,4 +398,12 @@ export const switchOrganization = async (orgId: string): Promise<MFASigninRespon
   }
 
   return response.json();
+};
+
+export const signupByEmail = (payload: ISignupByEmailPayload): Promise<ISignupByEmailResponse> => {
+  return clients.post('/identifier/v1/People/Signup', JSON.stringify(payload));
+};
+
+export const getSignupSettings = (): Promise<IGetSignUpSettingResponse> => {
+  return clients.get(`/idp/v1/Iam/GetSignUpSetting?ProjectKey=${projectKey}`);
 };

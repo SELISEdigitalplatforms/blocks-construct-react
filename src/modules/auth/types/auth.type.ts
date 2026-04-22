@@ -1,6 +1,7 @@
 export interface SigninEmailPayload {
   username: string;
   password: string;
+  captchaCode?: string;
 }
 
 export interface SigninEmailTokenResponse {
@@ -15,6 +16,12 @@ export interface SigninEmailMfaResponse {
   message: string;
   mfaType: number;
   mfaId: string;
+}
+
+export interface ActivationCodeExpirationResponse {
+  errors: unknown | null;
+  isSuccess: boolean;
+  userId: string;
 }
 
 export interface SigninEmailResponse {
@@ -40,8 +47,43 @@ export interface ForgotPasswordResponse {
 }
 
 export interface AccountActivationPayload {
+  firstname: string;
+  lastname: string;
   password: string;
   code: string;
   captchaCode: string;
   projectKey: string;
+}
+
+export interface ISignupByEmailPayload {
+  email: string;
+  captchaCode: string;
+}
+export interface ISignupByEmailResponse {
+  itemId: string | null;
+  errors: {
+    already_signup: string;
+  } | null;
+  isSuccess: boolean;
+}
+
+export interface IGetSignUpSettingResponse {
+  itemId: string;
+  createdDate: string;
+  lastUpdatedDate: string;
+  createdBy: string;
+  language: string;
+  lastUpdatedBy: string;
+  organizationIds: string[];
+  tags: string[];
+  isEmailPasswordSignUpEnabled: boolean;
+  isSSoSignUpEnabled: boolean;
+}
+
+export interface ISignupByEmailErrorResponse {
+  errors?: {
+    already_signup: string;
+  } | null;
+  isSuccess?: boolean;
+  itemId?: string | null;
 }
