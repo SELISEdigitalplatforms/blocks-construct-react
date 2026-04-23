@@ -33,7 +33,7 @@ export const Signin = () => {
     'dev-construct.seliseblocks.com',
   ].some((domain) => window.location.hostname === domain);
   return (
-    <div className="flex flex-col gap-6">
+    <div className="w-full max-w-md flex flex-col gap-6">
       <div className="w-32 h-14 mb-2">
         <img src={theme == 'dark' ? lightlogo : darklogo} className="w-full h-full" alt="logo" />
       </div>
@@ -53,18 +53,19 @@ export const Signin = () => {
           </div>
         )}
       </div>
-      
+
       {ssoError && (
         <div className="w-full">
           <div className="rounded-lg bg-error-background border border-error p-4">
-            <p className="text-xs font-normal text-error-high-emphasis">
-              {ssoError}
-            </p>
+            <p className="text-xs font-normal text-error-high-emphasis">{ssoError}</p>
           </div>
         </div>
       )}
 
-      <div id="login-banner" className={'w-full ' + (isBannerAllowedToVisible ? 'visible' : 'invisible h-0')}>
+      <div
+        id="login-banner"
+        className={'w-full ' + (isBannerAllowedToVisible ? 'visible' : 'invisible h-0')}
+      >
         <div className="rounded-lg bg-success-background border border-success p-4">
           <p className="text-xs font-normal text-success-high-emphasis">
             Log in to explore the complete Demo and Documentation. Use the credentials:{' '}
