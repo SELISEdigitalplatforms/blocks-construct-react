@@ -53,26 +53,28 @@ export const Signin = () => {
           </div>
         )}
       </div>
-      
+
       {ssoError && (
         <div className="w-full">
           <div className="rounded-lg bg-error-background border border-error p-4">
-            <p className="text-xs font-normal text-error-high-emphasis">
-              {ssoError}
-            </p>
+            <p className="text-xs font-normal text-error-high-emphasis">{ssoError}</p>
           </div>
         </div>
       )}
 
-      <div id="login-banner" className={'w-full ' + (isBannerAllowedToVisible ? 'visible' : 'invisible h-0')}>
-        <div className="rounded-lg bg-success-background border border-success p-4">
-          <p className="text-xs font-normal text-success-high-emphasis">
-            Log in to explore the complete Demo and Documentation. Use the credentials:{' '}
-            <span className="font-semibold">demo.construct@seliseblocks.com</span> with password:{' '}
-            <span className="font-semibold">H%FE*FYi5oTQ!VyT6TkEy</span>
-          </p>
+      {isBannerAllowedToVisible ? (
+        <div id="login-banner" className="w-full">
+          <div className="rounded-lg bg-success-background border border-success p-4">
+            <p className="text-xs font-normal text-success-high-emphasis">
+              Log in to explore the complete Demo and Documentation. Use the credentials:{' '}
+              <span className="font-semibold">demo.construct@seliseblocks.com</span> with password:{' '}
+              <span className="font-semibold">H%FE*FYi5oTQ!VyT6TkEy</span>
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-full" />
+      )}
       <div className="w-full flex flex-col gap-6">
         {passwordGrantAllowed && <SigninEmail />}
         {isDivider && <Divider text={t('AUTH_OR')} />}
