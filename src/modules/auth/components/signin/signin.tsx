@@ -33,7 +33,7 @@ export const Signin = () => {
     'dev-construct.seliseblocks.com',
   ].some((domain) => window.location.hostname === domain);
   return (
-    <div className="flex flex-col gap-6">
+    <div className="w-full max-w-md flex flex-col gap-6">
       <div className="w-32 h-14 mb-2">
         <img src={theme == 'dark' ? lightlogo : darklogo} className="w-full h-full" alt="logo" />
       </div>
