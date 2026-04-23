@@ -40,7 +40,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, re
   const EyeComponet = open ? EyeOffIcon : EyeIcon;
   return (
     <div className="grid w-full items-center gap-2">
-      <div className="relative">
+      <div className="relative mx-2">
         <Input
           type={open ? 'text' : 'password'}
           {...props}
