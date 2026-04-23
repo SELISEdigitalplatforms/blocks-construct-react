@@ -64,7 +64,7 @@ export const Signin = () => {
         </div>
       )}
 
-      <div className={'w-full ' + (isBannerAllowedToVisible ? 'visible' : 'invisible h-0')}>
+      <div id="login-banner" className={'w-full ' + (isBannerAllowedToVisible ? 'visible' : 'invisible h-0')}>
         <div className="rounded-lg bg-success-background border border-success p-4">
           <p className="text-xs font-normal text-success-high-emphasis">
             Log in to explore the complete Demo and Documentation. Use the credentials:{' '}
