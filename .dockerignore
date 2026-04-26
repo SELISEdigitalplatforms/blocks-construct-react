@@ -1,6 +1,12 @@
-node_modules
 .git
+node_modules
 build
 dist
-*.log
+coverage
+.vscode
+.cursor
+.idea
 .DS_Store
+*.log
+.env.local
+storybook-static

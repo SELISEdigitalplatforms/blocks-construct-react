@@ -178,7 +178,11 @@ export const BasePasswordForm = ({
                     {t('FIRST_NAME')}
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder={t('ENTER_YOUR_FIRST_NAME')} {...field} />
+                    <Input
+                      placeholder={t('ENTER_YOUR_FIRST_NAME')}
+                      autoComplete="first-name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -191,7 +195,11 @@ export const BasePasswordForm = ({
                 <FormItem>
                   <FormLabel className="text-high-emphasis font-normal">{t('LAST_NAME')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('ENTER_YOUR_LAST_NAME')} {...field} />
+                    <Input
+                      placeholder={t('ENTER_YOUR_LAST_NAME')}
+                      autoComplete="last-name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -207,7 +215,11 @@ export const BasePasswordForm = ({
             <FormItem>
               <FormLabel className="text-high-emphasis font-normal">{t('PASSWORD')}</FormLabel>
               <FormControl>
-                <PasswordInput placeholder={t('ENTER_YOUR_PASSWORD')} {...field} />
+                <PasswordInput
+                  placeholder={t('ENTER_YOUR_PASSWORD')}
+                  autoComplete="new-password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -223,7 +235,11 @@ export const BasePasswordForm = ({
                 {t('CONFIRM_PASSWORD')}
               </FormLabel>
               <FormControl>
-                <PasswordInput placeholder={t('CONFIRM_YOUR_PASSWORD')} {...field} />
+                <PasswordInput
+                  placeholder={t('CONFIRM_YOUR_PASSWORD')}
+                  autoComplete="new-password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
