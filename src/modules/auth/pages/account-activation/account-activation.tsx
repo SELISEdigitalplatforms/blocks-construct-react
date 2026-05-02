@@ -62,7 +62,7 @@ export const AccountActivationPage = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
+      <div className="pl-2">
         <div className="text-2xl font-bold text-high-emphasis">{t('COMPLETE_SIGNUP')}</div>
         {/* <div className="flex gap-1 mt-1">
           <div className="text-sm font-normal text-medium-emphasis">

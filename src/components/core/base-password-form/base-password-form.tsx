@@ -160,7 +160,7 @@ export const BasePasswordForm = ({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-4 max-h-[75vh] overflow-y-auto pr-5"
+        className="flex flex-col gap-4 max-h-[75vh] overflow-y-auto pr-5 pl-2"
         style={{
           scrollbarWidth: 'thin',
           scrollbarColor: 'hsl(var(--neutral-300)) transparent',
