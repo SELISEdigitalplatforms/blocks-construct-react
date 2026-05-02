@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import darkLogo from '@/assets/images/construct_logo_dark.svg';
 import lightLogo from '@/assets/images/construct_logo_light.svg';
@@ -16,6 +16,10 @@ export const SignupPage = () => {
 
   const isEmailPasswordSignUpEnabled = signupSettings?.isEmailPasswordSignUpEnabled ?? false;
   const isSSoSignUpEnabled = signupSettings?.isSSoSignUpEnabled ?? false;
+
+  if (!isEmailPasswordSignUpEnabled && !isSSoSignUpEnabled) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="flex flex-col gap-6">
