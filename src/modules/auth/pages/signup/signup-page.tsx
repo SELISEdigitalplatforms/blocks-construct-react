@@ -17,6 +17,12 @@ export const SignupPage = () => {
   const isEmailPasswordSignUpEnabled = signupSettings?.isEmailPasswordSignUpEnabled ?? false;
   const isSSoSignUpEnabled = signupSettings?.isSSoSignUpEnabled ?? false;
 
+  const showDivider =
+    isEmailPasswordSignUpEnabled &&
+    isSSoSignUpEnabled &&
+    loginOption?.ssoInfo &&
+    loginOption.ssoInfo.length > 0;
+
   if (!isEmailPasswordSignUpEnabled && !isSSoSignUpEnabled) {
     return <Navigate to="/login" replace />;
   }
@@ -42,9 +48,7 @@ export const SignupPage = () => {
       </div>
       {isEmailPasswordSignUpEnabled && <SignupForm />}
       <div>
-        {isEmailPasswordSignUpEnabled && isSSoSignUpEnabled && (
-          <Divider text={t('OR_CONTINUE_WITH')} />
-        )}
+        {showDivider && <Divider text={t('OR_CONTINUE_WITH')} />}
         {isSSoSignUpEnabled && loginOption && <SsoSignin loginOption={loginOption} />}
       </div>
     </div>
