@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import darkLogo from '@/assets/images/construct_logo_dark.svg';
 import lightLogo from '@/assets/images/construct_logo_light.svg';
@@ -16,6 +16,16 @@ export const SignupPage = () => {
 
   const isEmailPasswordSignUpEnabled = signupSettings?.isEmailPasswordSignUpEnabled ?? false;
   const isSSoSignUpEnabled = signupSettings?.isSSoSignUpEnabled ?? false;
+
+  const showDivider =
+    isEmailPasswordSignUpEnabled &&
+    isSSoSignUpEnabled &&
+    loginOption?.ssoInfo &&
+    loginOption.ssoInfo.length > 0;
+
+  if (!isEmailPasswordSignUpEnabled && !isSSoSignUpEnabled) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -38,9 +48,7 @@ export const SignupPage = () => {
       </div>
       {isEmailPasswordSignUpEnabled && <SignupForm />}
       <div>
-        {isEmailPasswordSignUpEnabled && isSSoSignUpEnabled && (
-          <Divider text={t('OR_CONTINUE_WITH')} />
-        )}
+        {showDivider && <Divider text={t('OR_CONTINUE_WITH')} />}
         {isSSoSignUpEnabled && loginOption && <SsoSignin loginOption={loginOption} />}
       </div>
     </div>
