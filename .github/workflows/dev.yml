@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: desciption
         run: echo 'initializ pipeline with ubuntu-22.04'
@@ -48,7 +48,7 @@ jobs:
       ClUSTER_RESOURCE_GROUP: ${{ secrets.ClUSTER_AKS_BLOCKS_RESOURCE_GROUP }}
       CLUSTER_NAME: ${{ secrets.AKS_BLOCKS_DEV_CLUSTER }}
       ACR_RESOURCE_GROUP: ${{ secrets.ClUSTER_AKS_BLOCKS_RESOURCE_GROUP }}
-    needs: [sonarqube-job]
+    # needs: [sonarqube-job]
 
   # storybook-job:
   #   permissions:
